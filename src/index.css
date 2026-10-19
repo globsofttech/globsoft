@@ -94,6 +94,39 @@
   animation: pulse-red 2s ease-in-out infinite;
 }
 
+.newsletter-form {
+  min-width: 0;
+}
+
+.newsletter-fields input {
+  min-height: 3.5rem;
+}
+
+.newsletter-fields button {
+  min-height: 3.5rem;
+  white-space: nowrap;
+}
+
+.newsletter-turnstile {
+  display: flex;
+  width: 100%;
+  min-height: 4.0625rem;
+  align-items: center;
+  justify-content: flex-start;
+  overflow: hidden;
+}
+
+.newsletter-turnstile iframe {
+  display: block;
+  max-width: 100%;
+}
+
+@media (max-width: 639px) {
+  .newsletter-turnstile {
+    justify-content: center;
+  }
+}
+
 .rotate-45 {
   @apply rotate-[45deg]
 }

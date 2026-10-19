@@ -69,6 +69,7 @@ const Footer = () => {
         turnstileWidgetId.current = window.turnstile.render(turnstileRef.current, {
           sitekey: turnstileSiteKey,
           theme: "dark",
+          size: "flexible",
           callback: (token) => setTurnstileToken(token),
           "expired-callback": () => setTurnstileToken(""),
           "error-callback": () => setTurnstileToken(""),
@@ -181,8 +182,8 @@ const Footer = () => {
             <h2 className="h5 mb-2">Stay updated</h2>
             <p className="body-2 text-n-4">Get the latest news and insights from Globsoft Tech.</p>
           </div>
-          <form className="w-full md:max-w-xl" onSubmit={handleNewsletterSubmit}>
-            <div className="flex flex-col gap-3 sm:flex-row">
+          <form className="newsletter-form w-full md:max-w-xl" onSubmit={handleNewsletterSubmit}>
+            <div className="newsletter-fields flex flex-col gap-3 sm:flex-row">
               <label className="sr-only" htmlFor="newsletter-email">Email address</label>
               <input
                 id="newsletter-email"
@@ -205,7 +206,7 @@ const Footer = () => {
               </button>
             </div>
             {turnstileSiteKey ? (
-              <div ref={turnstileRef} className="mt-3 min-h-[65px]" />
+              <div ref={turnstileRef} className="newsletter-turnstile mt-3 min-h-[65px]" />
             ) : (
               <p className="mt-3 body-2 text-color-3">
                 Newsletter security is not configured yet.
