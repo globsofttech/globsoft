@@ -12,13 +12,17 @@ import Contact from "./components/Contact";
 import OrderNow from "./components/OrderNow";
 import WhatsAppButton from "./components/WhatsAppButton";
 import Seo from "./components/Seo";
+import OfferBanner from "./components/OfferBanner";
+import BlogList from "./components/BlogList";
+import BlogPost from "./components/BlogPost";
 
 // Home Page Component (your existing landing page)
 const HomePage = () => {
   return (
     <>
       <Seo />
-      <div className="pt-[4.75rem] lg:pt-[5.25rem] overflow-hidden">
+      <div className="overflow-hidden">
+        <OfferBanner />
         <Header />
         <Hero />
         <Benefits />
@@ -35,15 +39,56 @@ const HomePage = () => {
   );
 };
 
+// Blog listing page
+const BlogPage = () => {
+  return (
+    <>
+      <div className="overflow-hidden">
+        <Header />
+        <BlogList />
+        <Footer />
+      </div>
+      <ButtonGradient />
+      <WhatsAppButton />
+    </>
+  );
+};
+
+// Single blog post page
+const BlogPostPage = () => {
+  return (
+    <>
+      <div className="overflow-hidden">
+        <Header />
+        <BlogPost />
+        <Footer />
+      </div>
+      <ButtonGradient />
+      <WhatsAppButton />
+    </>
+  );
+};
+
 const App = () => {
   return (
     <>
     <Routes>
       <Route path="/" element={<HomePage />} />
-      <Route path="/order" element={<><Seo page="order" /><OrderNow /></>} />
+      <Route path="/blog" element={<BlogPage />} />
+      <Route path="/blog/:slug" element={<BlogPostPage />} />
+      <Route
+        path="/order"
+        element={
+          <>
+            <Seo page="order" />
+            <OrderNow />
+            <WhatsAppButton />
+          </>
+        }
+      />
       </Routes>
     </>
     );
 };
 
-export default App;
+export default App;

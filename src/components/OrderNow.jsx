@@ -9,6 +9,7 @@ import Footer from './Footer';
 import ButtonGradient from '../assets/svg/ButtonGradient';
 import { grid } from '../assets';
 import { Gradient } from './design/Roadmap';
+import OfferBanner from './OfferBanner';
 
 const OrderNow = () => {
   const navigate = useNavigate();
@@ -53,9 +54,10 @@ const OrderNow = () => {
   if (submitted) {
     return (
       <>
-        <div className="pt-[4.75rem] lg:pt-[5.25rem] overflow-hidden">
+        <div className="overflow-hidden">
+          <OfferBanner />
           <Header />
-          <Section className="overflow-hidden" id="order-success">
+          <Section className="pt-[4.75rem] lg:pt-[5.25rem] overflow-hidden" id="order-success">
             <div className="container md:pb-10">
               <div className="text-center mb-12">
                 <div className="mb-8 flex justify-center">
@@ -99,9 +101,10 @@ const OrderNow = () => {
 
   return (
     <>
-      <div className="pt-[4.75rem] lg:pt-[5.25rem] overflow-hidden">
+      <div className="overflow-hidden">
+        <OfferBanner />
         <Header />
-        <Section className="overflow-hidden" id="order">
+        <Section className="pt-[4.75rem] lg:pt-[5.25rem] overflow-hidden" id="order">
           <div className="container md:pb-10">
             <Heading 
               tag="Ready to start your project" 

@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 import { disablePageScroll, enablePageScroll } from "scroll-lock";
 
 import { brainwave } from "../assets";
@@ -49,19 +49,12 @@ const Header = () => {
     }
   };
 
-  // Handle contact link
-  const handleContactClick = (e) => {
-    if (location.pathname !== '/') {
-      e.preventDefault();
-      navigate('/#contact');
-    }
-  };
-
   return (
     <div
-      className={`fixed top-0 left-0 w-full z-50  border-b border-n-6 lg:bg-n-8/90 lg:backdrop-blur-sm ${
+      className={`fixed left-0 w-full z-50 border-b border-n-6 lg:bg-n-8/90 lg:backdrop-blur-sm ${
         openNavigation ? "bg-n-8" : "bg-n-8/90 backdrop-blur-sm"
       }`}
+      style={{ top: "var(--offer-header-offset, 0px)" }}
     >
       <div className="flex items-center px-5 lg:px-7.5 xl:px-10 max-lg:py-4">
         <a 
@@ -75,37 +68,48 @@ const Header = () => {
         <nav
           className={`${
             openNavigation ? "flex" : "hidden"
-          } fixed top-[5rem] left-0 right-0 bottom-0 bg-n-8 lg:static lg:flex lg:mx-auto lg:bg-transparent`}
+            } absolute top-full left-0 right-0 min-h-[calc(100vh-5rem)] bg-n-8 lg:static lg:flex lg:mx-auto lg:min-h-0 lg:bg-transparent`}
         >
           <div className="relative z-2 flex flex-col items-center justify-center m-auto lg:flex-row">
-            {navigation.map((item) => (
-              <a
-                key={item.id}
-                href={item.url}
-                onClick={(e) => handleNavClick(e, item.url)}
-                className={`block relative font-code text-2xl uppercase text-n-1 transition-colors hover:text-color-1 ${
-                  item.onlyMobile ? "lg:hidden" : ""
-                } px-6 py-6 md:py-8 lg:-mr-0.25 lg:text-xs lg:font-semibold ${
-                  item.url === location.hash
-                    ? "z-2 lg:text-n-1"
-                    : "lg:text-n-1/50"
-                } lg:leading-5 lg:hover:text-n-1 xl:px-12`}
-              >
-                {item.title}
-              </a>
-            ))}
+            {navigation.map((item) => {
+              const isActive = item.isPage
+                ? location.pathname === item.url
+                : item.url === location.hash;
+              const itemClass = `block relative font-code text-2xl uppercase text-n-1 transition-colors hover:text-color-1 ${
+                item.onlyMobile ? "lg:hidden" : ""
+              } px-6 py-6 md:py-8 lg:-mr-0.25 lg:text-xs lg:font-semibold ${
+                isActive ? "z-2 lg:text-n-1" : "lg:text-n-1/50"
+              } lg:leading-5 lg:hover:text-n-1 xl:px-12`;
+
+              if (item.isPage) {
+                return (
+                  <Link
+                    key={item.id}
+                    to={item.url}
+                    onClick={handleClick}
+                    className={itemClass}
+                  >
+                    {item.title}
+                  </Link>
+                );
+              }
+
+              return (
+                <a
+                  key={item.id}
+                  href={item.url}
+                  onClick={(e) => handleNavClick(e, item.url)}
+                  className={itemClass}
+                >
+                  {item.title}
+                </a>
+              );
+            })}
           </div>
 
           <HamburgerMenu />
         </nav>
 
-        <a
-          href="#contact"
-          onClick={handleContactClick}
-          className="button hidden mr-8 text-n-1/50 transition-colors hover:text-n-1 lg:block"
-        >
-          Contact
-        </a>
         <Button className="hidden lg:flex" href="/order">
           Order Now
         </Button>

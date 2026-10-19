@@ -69,9 +69,14 @@ export const navigation = [
   },
   {
     id: "4",
+    title: "Blog",
+    url: "/blog",
+    isPage: true,
+  },
+  {
+    id: "5",
     title: "Contact",
     url: "#contact",
-    onlyMobile: true,
   },
 ];
 

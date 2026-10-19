@@ -30,7 +30,7 @@ const Footer = () => {
 
     const updateSystemStatus = async () => {
       try {
-        const response = await fetch(`${adminPortalUrl}/api/system-status`);
+        const response = await fetch(`${adminPortalUrl}/api/system-status?fresh=${Date.now()}`, { cache: "no-store" });
 
         if (!response.ok) {
           throw new Error(`System status request failed: ${response.status}`);
@@ -170,6 +170,9 @@ const Footer = () => {
             </a>
             <a href="#features" className="caption text-n-4 hover:text-n-1 transition-colors">
               Services
+            </a>
+            <a href="/blog" className="caption text-n-4 hover:text-n-1 transition-colors">
+              Blog
             </a>
             <a href="#contact" className="caption text-n-4 hover:text-n-1 transition-colors">
             Contact
