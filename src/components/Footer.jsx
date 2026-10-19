@@ -21,7 +21,7 @@ const Footer = () => {
 
   const statusType = ["degraded", "maintenance", "warning"].includes(systemStatus.status)
     ? "warning"
-    : ["down", "outage", "error"].includes(systemStatus.status)
+    : ["down", "offline", "outage", "error"].includes(systemStatus.status)
       ? "error"
       : "running";
 

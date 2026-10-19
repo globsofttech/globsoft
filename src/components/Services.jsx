@@ -1,7 +1,7 @@
 import Section from "./Section";
 import Heading from "./Heading";
 import { service1, service2, service3, check } from "../assets";
-import { brainwaveServices, brainwaveServicesIcons, brandMotto } from "../constants";
+import { brainwaveServices, brainwaveServicesIcons } from "../constants";
 import {
   PhotoChatMessage,
   Gradient,
@@ -16,7 +16,7 @@ const Services = () => {
     <Section id="how-to-use">
       <div className="container">
         <Heading
-          title={brandMotto}
+          title="Your Success, Engineered in Code !"
           text="Every line of code we write is optimized for your business objectives"
         />
 

@@ -6,6 +6,7 @@ import Collaboration from "./components/Collaboration";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
+import Pricing from "./components/Pricing";
 import Services from "./components/Services";
 import Contact from "./components/Contact";
 import OrderNow from "./components/OrderNow";
@@ -23,7 +24,7 @@ const HomePage = () => {
         <Benefits />
         <Collaboration />
         <Services />
-        {/* <Pricing /> */}
+        <Pricing />
         {/* <Roadmap /> */}
         <Contact />
         <Footer />

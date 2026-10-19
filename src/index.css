@@ -98,6 +98,23 @@
   min-width: 0;
 }
 
+.company-logo-list {
+  gap: 1.5rem;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+.company-logo-list li {
+  flex: 0 0 clamp(9rem, 16vw, 13rem);
+}
+
+.company-logo-list a {
+  display: block;
+  width: 100%;
+}
+
 .newsletter-fields input {
   min-height: 3.5rem;
 }
