@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://globsoft.vercel.app/sitemap.xml
