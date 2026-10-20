@@ -254,8 +254,6 @@ const Footer = () => {
 
             <a
               href={adminPortalUrl}
-              target="_blank"
-              rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-n-6/70 bg-n-7/60 hover:bg-n-6 hover:border-n-5 text-xs text-n-3 hover:text-n-1 transition-all min-h-[40px] touch-manipulation cursor-pointer select-none active:scale-95"
               aria-label="Admin Portal Login"
             >
