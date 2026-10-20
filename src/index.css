@@ -124,11 +124,20 @@
   pointer-events: none;
 }
 
+.offer-banner-viewport {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  mask-image: linear-gradient(to right, transparent, black 3%, black calc(100% - 6.5rem), transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 3%, black calc(100% - 6.5rem), transparent 100%);
+}
+
 .offer-banner-track {
   display: flex;
-  min-width: max-content;
-  padding-right: 7rem;
-  animation: offer-marquee 24s linear infinite;
+  width: max-content;
+  animation: offer-marquee 28s linear infinite;
 }
 
 .offer-banner-group {
@@ -287,15 +296,16 @@
 .newsletter-turnstile {
   display: flex;
   width: 100%;
-  min-height: 4.0625rem;
+  min-height: 65px;
   align-items: center;
   justify-content: flex-start;
-  overflow: hidden;
+  margin-top: 0.75rem;
+  overflow: visible;
 }
 
 .newsletter-turnstile iframe {
   display: block;
-  max-width: 100%;
+  max-width: 100% !important;
 }
 
 @media (max-width: 639px) {

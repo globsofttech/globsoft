@@ -1,6 +1,21 @@
 {
   "rewrites": [
     {
+      "source": "/blog/:slug",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": "(?i).*(facebookexternalhit|facebot|facebookcatalog|whatsapp|instagram|twitterbot|linkedinbot|slackbot|telegrambot|discordbot|applebot|pinterest).*"
+        }
+      ],
+      "destination": "https://adminglobsoft.vercel.app/api/blog-preview/:slug"
+    },
+    {
+      "source": "/api/(.*)",
+      "destination": "https://adminglobsoft.vercel.app/api/$1"
+    },
+    {
       "source": "/((?!assets/|src/|api/|.*\\..*).*)",
       "destination": "/index.html"
     }

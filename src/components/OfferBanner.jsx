@@ -80,6 +80,13 @@ const OfferBanner = () => {
     const offer = plan.offer || `${plan.discount}% discount`;
     return `${offer} on ${plan.title} — save ${plan.discount}%`;
   });
+
+  // Ensure enough items in each group so the marquee is continuous and smooth without gaps
+  let displayMessages = messages;
+  while (displayMessages.length > 0 && displayMessages.length < 6) {
+    displayMessages = [...displayMessages, ...messages];
+  }
+
   const pricingHref = location.pathname === "/" ? "#pricing" : "/#pricing";
 
   return (
@@ -89,17 +96,19 @@ const OfferBanner = () => {
         aria-label="Current offers"
         aria-hidden={!showBanner}
       >
-        <div className="offer-banner-track">
-          {[0, 1].map((group) => (
-            <div className="offer-banner-group" key={group} aria-hidden={group === 1}>
-              {messages.map((message, index) => (
-                <span className="offer-banner-item" key={`${group}-${index}`}>
-                  <span className="offer-banner-spark" aria-hidden="true">✦</span>
-                  {message}
-                </span>
-              ))}
-            </div>
-          ))}
+        <div className="offer-banner-viewport">
+          <div className="offer-banner-track">
+            {[0, 1].map((group) => (
+              <div className="offer-banner-group" key={group} aria-hidden={group === 1}>
+                {displayMessages.map((message, index) => (
+                  <span className="offer-banner-item" key={`${group}-${index}`}>
+                    <span className="offer-banner-spark" aria-hidden="true">✦</span>
+                    {message}
+                  </span>
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
         <a className="offer-banner-link" href={pricingHref}>
           View offers

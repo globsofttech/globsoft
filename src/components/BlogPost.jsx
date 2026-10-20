@@ -90,7 +90,7 @@ const BlogPost = () => {
     const desc = blog.seo_description || blog.excerpt;
     const canonical = `${SITE_URL}/blog/${blog.slug}`;
     const ogImage = blog.image_url
-      ? `${apiBase}${blog.image_url}`
+      ? (blog.image_url.startsWith("http://") || blog.image_url.startsWith("https://") ? blog.image_url : `${apiBase}${blog.image_url}`)
       : `${SITE_URL}/social-preview.jpg`;
 
     document.title = pageTitle;

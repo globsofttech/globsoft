@@ -69,7 +69,7 @@ const Footer = () => {
         turnstileWidgetId.current = window.turnstile.render(turnstileRef.current, {
           sitekey: turnstileSiteKey,
           theme: "dark",
-          size: "flexible",
+          size: "normal",
           callback: (token) => setTurnstileToken(token),
           "expired-callback": () => setTurnstileToken(""),
           "error-callback": () => setTurnstileToken(""),
@@ -180,7 +180,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="mb-10 rounded-2xl border border-n-6 bg-n-7/60 p-6 md:flex md:items-center md:justify-between md:gap-8">
+        <div className="mb-10 rounded-2xl border border-n-6 bg-n-7/60 p-4 sm:p-6 md:flex md:items-center md:justify-between md:gap-8">
           <div className="mb-5 md:mb-0">
             <h2 className="h5 mb-2">Stay updated</h2>
             <p className="body-2 text-n-4">Get the latest news and insights from Globsoft Tech.</p>
@@ -209,7 +209,9 @@ const Footer = () => {
               </button>
             </div>
             {turnstileSiteKey ? (
-              <div ref={turnstileRef} className="newsletter-turnstile mt-3 min-h-[65px]" />
+              <div className="flex justify-start max-sm:justify-center w-full overflow-visible">
+                <div ref={turnstileRef} className="newsletter-turnstile mt-3 min-h-[65px]" />
+              </div>
             ) : (
               <p className="mt-3 body-2 text-color-3">
                 Newsletter security is not configured yet.
@@ -254,10 +256,11 @@ const Footer = () => {
               href={adminPortalUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 caption text-n-4 transition-colors hover:text-n-1"
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-n-6/70 bg-n-7/60 hover:bg-n-6 hover:border-n-5 text-xs text-n-3 hover:text-n-1 transition-all min-h-[40px] touch-manipulation cursor-pointer select-none active:scale-95"
+              aria-label="Admin Portal Login"
             >
-              <i className="ri-shield-keyhole-line" aria-hidden="true" />
-              Are you the admin?
+              <i className="ri-shield-keyhole-line text-sm pointer-events-none" aria-hidden="true" />
+              <span className="pointer-events-none">Are you the admin?</span>
             </a>
 
             <ul className="flex gap-5 flex-wrap">

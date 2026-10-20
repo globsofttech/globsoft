@@ -1,0 +1,19 @@
+access token = EAAdZBwMccMsEBS5FEoZBUdf4JuVjBmpvCw4Uj4UJUOUJCv5d9Cxitks47vjtMTic7YM5HTZBkVtPXBhRhdXRYDrqB6pw1d4l9k4ZBhcStntjcGiUfFAyjzMgQwVZAhwxR3DKoYLmuJUZCPCN46om7UaJp83ZBAbkT4nLe6RrkaDjw62TMmGfIX2ZBaWfmjZBt4wZCkhVxgjSB3OYMp
+{
+  "data": [
+    {
+      "id": "354868577710132",
+      "name": "Globsoft Tech Pvt. Ltd.",
+      "access_token": "EAAdZBwMccMsEBS450Wy9eZAxTYTdvFLO4pjccoHZAiArb0QKlUXhFUfvlbb7AgOb5vSrtYZCNbDaQLP76MPKg1gr5Y8hr3ZBB1ZCBaCm63yXBRB3R50oB9LYcloKBW5ndK0phOBgZAXxBHEHR9BKu975ZASPxZCMAk8k1uPbqM09ZBpf1uPsNlr2fsZCn5jQbZBC58tk4sY26XIwFSHXeYWZBKkFpIASf",
+      "instagram_business_account": {
+        "id": "17841467456871120"
+      }
+    }
+  ],
+  "paging": {
+    "cursors": {
+      "before": "QVFIVGVXLVBHdXh0RnlyVGlteTBrZATByUlRRQTczb2ExZAzFfRVE2a0NxQk9FNFMySDdjQm9GT0xfdnR4OTNwOXBaWDRDblUxZADFGWGltRnYwVlhOR2FKVnhR",
+      "after": "QVFIVGVXLVBHdXh0RnlyVGlteTBrZATByUlRRQTczb2ExZAzFfRVE2a0NxQk9FNFMySDdjQm9GT0xfdnR4OTNwOXBaWDRDblUxZADFGWGltRnYwVlhOR2FKVnhR"
+    }
+  }
+}

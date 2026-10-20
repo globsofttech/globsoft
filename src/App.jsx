@@ -1,5 +1,6 @@
 // src/App.jsx
-import { Routes, Route } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import ButtonGradient from "./assets/svg/ButtonGradient";
 import Benefits from "./components/Benefits";
 import Collaboration from "./components/Collaboration";
@@ -15,6 +16,38 @@ import Seo from "./components/Seo";
 import OfferBanner from "./components/OfferBanner";
 import BlogList from "./components/BlogList";
 import BlogPost from "./components/BlogPost";
+
+// Automatically scrolls to anchor elements across page navigation and SPA route changes
+const ScrollToAnchor = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash) {
+      const id = location.hash.replace('#', '');
+      if (!id) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
+      const timer = setTimeout(() => {
+        const el = document.getElementById(id);
+        if (el) {
+          const headerOffset = 90;
+          const elementPosition = el.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          });
+        }
+      }, 120);
+      return () => clearTimeout(timer);
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [location.pathname, location.hash]);
+
+  return null;
+};
 
 // Home Page Component (your existing landing page)
 const HomePage = () => {
@@ -44,6 +77,7 @@ const BlogPage = () => {
   return (
     <>
       <div className="overflow-hidden">
+        <OfferBanner />
         <Header />
         <BlogList />
         <Footer />
@@ -59,6 +93,7 @@ const BlogPostPage = () => {
   return (
     <>
       <div className="overflow-hidden">
+        <OfferBanner />
         <Header />
         <BlogPost />
         <Footer />
@@ -72,23 +107,24 @@ const BlogPostPage = () => {
 const App = () => {
   return (
     <>
-    <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/blog" element={<BlogPage />} />
-      <Route path="/blog/:slug" element={<BlogPostPage />} />
-      <Route
-        path="/order"
-        element={
-          <>
-            <Seo page="order" />
-            <OrderNow />
-            <WhatsAppButton />
-          </>
-        }
-      />
+      <ScrollToAnchor />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/blog" element={<BlogPage />} />
+        <Route path="/blog/:slug" element={<BlogPostPage />} />
+        <Route
+          path="/order"
+          element={
+            <>
+              <Seo page="order" />
+              <OrderNow />
+              <WhatsAppButton />
+            </>
+          }
+        />
       </Routes>
     </>
-    );
+  );
 };
 
-export default App;
+export default App;
