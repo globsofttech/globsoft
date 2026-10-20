@@ -50,10 +50,14 @@ const WhatsAppButton = () => {
   };
 
   return (
-    <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 flex flex-col items-end gap-3">
+    // CHANGE 1: Added "pointer-events-none" to the outer wrapper so it doesn't block the footer
+    <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 flex flex-col items-end gap-3 pointer-events-none">
       <div
+        // CHANGE 2: Added "pointer-events-auto" when isOpen is true, and "hidden" when closed so it takes 0 height
         className={`flex flex-col items-end gap-3 transition-all duration-200 ${
-          isOpen ? "visible translate-y-0 opacity-100" : "pointer-events-none invisible translate-y-2 opacity-0"
+          isOpen
+            ? "pointer-events-auto visible translate-y-0 opacity-100"
+            : "pointer-events-none invisible translate-y-2 opacity-0"
         }`}
         aria-hidden={!isOpen}
       >
@@ -76,7 +80,8 @@ const WhatsAppButton = () => {
       </div>
 
       {showPrompt && (
-        <div className="relative mb-1 flex max-w-[14rem] items-center gap-2 rounded-2xl border border-color-1/30 bg-n-8/95 px-4 py-3 text-sm text-n-1 shadow-2xl backdrop-blur-sm animate-[bubble-in_400ms_ease-out]">
+        // CHANGE 3: Added "pointer-events-auto" so the prompt & close button can still be clicked
+        <div className="pointer-events-auto relative mb-1 flex max-w-[14rem] items-center gap-2 rounded-2xl border border-color-1/30 bg-n-8/95 px-4 py-3 text-sm text-n-1 shadow-2xl backdrop-blur-sm animate-[bubble-in_400ms_ease-out]">
           <span className="absolute -bottom-2 right-7 h-4 w-4 rotate-45 border-b border-r border-color-1/30 bg-n-8/95" />
           <span className="relative z-10">
             <strong className="block font-semibold">Want to know more?</strong>
@@ -93,30 +98,31 @@ const WhatsAppButton = () => {
         </div>
       )}
 
-      <div className="relative">
+      {/* CHANGE 4: Added "pointer-events-auto" so the main floating button works */}
+      <div className="pointer-events-auto relative">
         {!isOpen && (
-          <span className="absolute inset-0 rounded-full bg-gradient-to-r from-[#00e5ff] via-[#ff4ecd] to-[#7c3aed] shadow-[0_0_24px_rgba(255,78,205,0.65)] animate-[contact-pulse_2.4s_ease-out_infinite]" />
+          <span className="pointer-events-none absolute inset-0 rounded-full bg-gradient-to-r from-[#00e5ff] via-[#ff4ecd] to-[#7c3aed] shadow-[0_0_24px_rgba(255,78,205,0.65)] animate-[contact-pulse_2.4s_ease-out_infinite]" />
         )}
         <a
-        href="#contact"
-        onClick={(event) => {
-          event.preventDefault();
-          toggleChannels();
-        }}
-        className="group relative flex h-14 w-14 cursor-pointer items-center justify-center rounded-full bg-color-1 shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-2xl md:h-16 md:w-16"
-        aria-label={isOpen ? "Close messaging options" : "Open messaging options"}
-        aria-expanded={isOpen}
-      >
-        <svg className="relative h-9 w-9 text-white md:h-10 md:w-10" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          {isOpen ? (
-            <path d="m7 7 10 10M17 7 7 17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-          ) : (
-            <>
-              <path d="M5 6.5A3.5 3.5 0 0 1 8.5 3h7A3.5 3.5 0 0 1 19 6.5v4a3.5 3.5 0 0 1-3.5 3.5h-3l-4.5 4v-4.05A3.5 3.5 0 0 1 5 10.5v-4Z" fill="currentColor" />
-              <path d="M8 8h8M8 11h5" stroke="#001b3d" strokeWidth="1.4" strokeLinecap="round" />
-            </>
-          )}
-        </svg>
+          href="#contact"
+          onClick={(event) => {
+            event.preventDefault();
+            toggleChannels();
+          }}
+          className="group relative flex h-14 w-14 cursor-pointer items-center justify-center rounded-full bg-color-1 shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-2xl md:h-16 md:w-16"
+          aria-label={isOpen ? "Close messaging options" : "Open messaging options"}
+          aria-expanded={isOpen}
+        >
+          <svg className="relative h-9 w-9 text-white md:h-10 md:w-10" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            {isOpen ? (
+              <path d="m7 7 10 10M17 7 7 17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            ) : (
+              <>
+                <path d="M5 6.5A3.5 3.5 0 0 1 8.5 3h7A3.5 3.5 0 0 1 19 6.5v4a3.5 3.5 0 0 1-3.5 3.5h-3l-4.5 4v-4.05A3.5 3.5 0 0 1 5 10.5v-4Z" fill="currentColor" />
+                <path d="M8 8h8M8 11h5" stroke="#001b3d" strokeWidth="1.4" strokeLinecap="round" />
+              </>
+            )}
+          </svg>
         </a>
       </div>
     </div>
