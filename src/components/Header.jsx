@@ -6,12 +6,18 @@ import { navigation } from "../constants";
 import Button from "./Button";
 import MenuSvg from "../assets/svg/MenuSvg";
 import { HamburgerMenu } from "./design/Header";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [openNavigation, setOpenNavigation] = useState(false);
+
+  useEffect(() => {
+    return () => {
+      enablePageScroll();
+    };
+  }, []);
 
   const toggleNavigation = () => {
     if (openNavigation) {
@@ -98,7 +104,7 @@ const Header = () => {
         <nav
           className={`${
             openNavigation ? "flex" : "hidden"
-          } fixed inset-x-0 top-[calc(4.75rem+var(--offer-header-offset,0px))] bottom-0 bg-n-8 overflow-y-auto z-50 flex-col items-center lg:static lg:flex lg:flex-row lg:inset-auto lg:top-auto lg:bottom-auto lg:bg-transparent lg:overflow-visible lg:mx-auto lg:min-h-0 max-lg:px-6 max-lg:pb-12`}
+          } fixed inset-x-0 top-[calc(4.75rem+var(--offer-header-offset,0px))] bottom-0 bg-n-8 max-lg:overflow-x-hidden max-lg:overflow-y-auto max-lg:overscroll-contain z-50 flex-col items-center lg:static lg:flex lg:flex-row lg:inset-auto lg:top-auto lg:bottom-auto lg:bg-transparent lg:overflow-visible lg:mx-auto lg:min-h-0 max-lg:px-6 max-lg:pb-12`}
         >
           <div className="relative z-2 flex flex-col items-center justify-center my-auto py-6 lg:my-0 lg:py-0 lg:flex-row w-full">
             {navigation.map((item) => {

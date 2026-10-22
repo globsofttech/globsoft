@@ -9,35 +9,48 @@ const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [contactMessage, setContactMessage] = useState('');
 
+  const adminPortalUrl = (
+    import.meta.env.VITE_ADMIN_PORTAL_URL || "https://adminglobsoft.vercel.app"
+  ).replace(/\/+$/, "");
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setContactMessage('');
 
     const form = e.target;
     const formData = new FormData(form);
+    const data = {
+      name: formData.get('name'),
+      email: formData.get('email'),
+      message: formData.get('message'),
+    };
 
     try {
-      const response = await fetch(form.action, {
+      const response = await fetch(`${adminPortalUrl}/api/contact`, {
         method: 'POST',
-        body: formData,
         headers: {
-          'Accept': 'application/json'
-        }
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify(data),
       });
 
-      if (response.ok) {
-        setContactMessage('Message sent successfully');
+      const resData = await response.json().catch(() => ({}));
+
+      if (response.ok && resData.success !== false) {
+        setContactMessage('Message sent successfully! We will get back to you shortly.');
         form.reset();
         
         setTimeout(() => {
           setContactMessage('');
         }, 5000);
       } else {
-        setContactMessage('Message not sent (service error)');
+        setContactMessage(resData.error || 'Message not sent. Please try again.');
       }
     } catch (error) {
-      console.error('FormSubmit error:', error);
-      setContactMessage('Message not sent (service error)');
+      console.error('Contact submission error:', error);
+      setContactMessage('Could not connect to server. Please try again later.');
     } finally {
       setIsSubmitting(false);
     }
@@ -60,17 +73,7 @@ const Contact = () => {
               />
             </div>
             <div className="relative z-1">
-              <form 
-                action="https://formsubmit.co/ajax/info.globsoft@gmail.com" 
-                method="POST"
-                onSubmit={handleSubmit}
-              >
-                {/* FormSubmit configuration - these are hidden fields */}
-                <input type="hidden" name="_subject" value="New contact form submission from your Globsoft Tech! (gHIa5GIq) " />
-                <input type="hidden" name="_captcha" value="false" />
-                <input type="hidden" name="_template" value="table" />
-                <input type="hidden" name="_next" value="https://globsoft.vercel.app/" />
-                
+              <form onSubmit={handleSubmit}>
                 <div className="mb-8">
                   <label className="block body-2 text-n-1 mb-4" htmlFor="name">
                     Your Name
