@@ -1,12 +1,16 @@
 {
   "rewrites": [
     {
+      "source": "/sitemap.xml",
+      "destination": "https://adminglobsoft.vercel.app/api/sitemap.xml"
+    },
+    {
       "source": "/blog/:slug",
       "has": [
         {
           "type": "header",
           "key": "user-agent",
-          "value": "(?i).*(facebookexternalhit|meta-externalagent|facebot|facebookcatalog|whatsapp|twitterbot|linkedinbot|slackbot|telegrambot|discordbot|applebot|pinterestbot).*"
+          "value": "(?i).*(googlebot|bingbot|duckduckbot|slurp|yandex|baiduspider|facebookexternalhit|meta-externalagent|facebot|facebookcatalog|whatsapp|twitterbot|linkedinbot|slackbot|telegrambot|discordbot|applebot|pinterestbot).*"
         }
       ],
       "destination": "https://adminglobsoft.vercel.app/api/blog-preview/:slug"
