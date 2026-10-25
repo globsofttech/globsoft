@@ -1,6 +1,6 @@
 // src/App.jsx
-import { useEffect } from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { useEffect } from "react";
+import { Routes, Route, useLocation } from "react-router-dom";
 import ButtonGradient from "./assets/svg/ButtonGradient";
 import Benefits from "./components/Benefits";
 import Collaboration from "./components/Collaboration";
@@ -25,9 +25,9 @@ const ScrollToAnchor = () => {
 
   useEffect(() => {
     if (location.hash) {
-      const id = location.hash.replace('#', '');
+      const id = location.hash.replace("#", "");
       if (!id) {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo({ top: 0, behavior: "smooth" });
         return;
       }
       const timer = setTimeout(() => {
@@ -35,23 +35,24 @@ const ScrollToAnchor = () => {
         if (el) {
           const headerOffset = 90;
           const elementPosition = el.getBoundingClientRect().top;
-          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+          const offsetPosition =
+            elementPosition + window.pageYOffset - headerOffset;
           window.scrollTo({
             top: offsetPosition,
-            behavior: 'smooth'
+            behavior: "smooth",
           });
         }
       }, 120);
       return () => clearTimeout(timer);
     } else {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   }, [location.pathname, location.hash]);
 
   return null;
 };
 
-// Home Page Component (your existing landing page)
+// Home Page Component
 const HomePage = () => {
   return (
     <>
@@ -68,7 +69,6 @@ const HomePage = () => {
         <Contact />
         <Footer />
       </div>
-      <CookieConsent />
       <ButtonGradient />
       <WhatsAppButton />
     </>
@@ -106,9 +106,12 @@ const BlogPostPage = () => {
     </>
   );
 };
-const Team = () => {
+
+// ✅ Renamed from Team to TeamPage to avoid clashing with imported Team component
+const TeamPage = () => {
   return (
     <>
+      <Seo page="team" />
       <div className="overflow-hidden">
         <OfferBanner />
         <Header />
@@ -128,7 +131,8 @@ const App = () => {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/blog" element={<BlogPage />} />
-        <Route path="/team" element={<Team />} />
+        {/* ✅ Uses TeamPage here */}
+        <Route path="/team" element={<TeamPage />} />
         <Route path="/blog/:slug" element={<BlogPostPage />} />
         <Route
           path="/order"
@@ -141,6 +145,9 @@ const App = () => {
           }
         />
       </Routes>
+
+      {/* ✅ Placed globally so cookie consent works on all pages */}
+      <CookieConsent />
     </>
   );
 };
