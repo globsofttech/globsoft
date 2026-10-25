@@ -11,7 +11,7 @@ const teamMembers = [
     id: "1",
     name: "Rajan Poudel",
     role: "Founder & CEO",
-    bio: "Self-taught software and web developer, and Founder of Globsoft Tech. Currently pursuing an MBBS at Chitwan Medical College, combining technical architecture with digital innovation.",
+    bio: "Self-taught software developer, and Founder of Globsoft Tech.",
     image: rajanImg,
     email: "rajanpoudel.np@gmail.com",
     socials: {
