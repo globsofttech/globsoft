@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
 
+// 👇 Make sure these filenames match your actual images inside src/assets/
 import rajanImg from "../assets/rajan.jpg";
 import souryaImg from "../assets/sourya.png";
 import ankitImg from "../assets/ankit.jpg";
@@ -44,24 +46,48 @@ const teamMembers = [
 ];
 
 const Team = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
-    <section
-      id="team"
-      className="relative py-20 lg:py-28 bg-[#0E0C15] text-white overflow-hidden border-t border-white/10"
-    >
+    <section className="relative min-h-[calc(100vh-5.25rem)] py-16 lg:py-24 bg-[#0E0C15] text-white overflow-hidden">
       {/* Background Glow Effects */}
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-600/10 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="container relative z-10 mx-auto px-5 md:px-10 max-w-7xl">
+        {/* Back to Home Button */}
+        <div className="mb-8">
+          <Link
+            to="/"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-mono uppercase tracking-wider text-gray-300 hover:text-white transition-all"
+          >
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M10 19l-7-7m0 0l7-7m-7 7h18"
+              />
+            </svg>
+            Back to Home
+          </Link>
+        </div>
+
         {/* Section Header */}
         <div className="max-w-3xl mx-auto text-center mb-16 md:mb-20">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-purple-500/30 bg-purple-500/10 text-purple-300 text-xs font-mono uppercase tracking-widest mb-4">
             <span>[ Meet Globsoft ]</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-6 bg-gradient-to-r from-white via-white to-gray-400 bg-clip-text text-transparent">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-6 bg-gradient-to-r from-white via-white to-gray-400 bg-clip-text text-transparent">
             The Minds Behind Our Innovation
-          </h2>
+          </h1>
           <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
             We are a collective of engineers, designers, and strategists dedicated
             to building next-generation digital products that empower businesses
@@ -69,7 +95,7 @@ const Team = () => {
           </p>
         </div>
 
-        {/* Team Grid (3 columns on large screens, centered) */}
+        {/* Team Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {teamMembers.map((member) => (
             <div
@@ -98,7 +124,6 @@ const Team = () => {
                   </p>
                 </div>
 
-                {/* Bio */}
                 <p className="text-sm text-gray-400 leading-relaxed mb-6">
                   {member.bio}
                 </p>
@@ -196,7 +221,7 @@ const Team = () => {
                     </a>
                   )}
 
-                  {/* Quick Mail Icon Button in Social Bar */}
+                  {/* Quick Mail Icon Button */}
                   {member.email && (
                     <a
                       href={`mailto:${member.email}`}
