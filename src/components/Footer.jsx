@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import Section from "./Section";
-import { brandMotto, brandName, socials } from "../constants";
-import { brainwave } from "../assets";
-import { curve } from "../assets";
+// 👇 Added `navigation` to the constants import
+import { brandMotto, brandName, navigation, socials } from "../constants";
+import { brainwave, curve } from "../assets";
 
 const Footer = () => {
   const adminPortalUrl = (
@@ -25,12 +26,20 @@ const Footer = () => {
       ? "error"
       : "running";
 
+  // Ensures hash links like "#features" work from "/team", "/blog", or "/order"
+  const formatNavUrl = (url = "") => {
+    if (url.startsWith("#")) return `/${url}`;
+    return url;
+  };
+
   useEffect(() => {
     let isMounted = true;
 
     const updateSystemStatus = async () => {
       try {
-        const response = await fetch(`${adminPortalUrl}/api/system-status?fresh=${Date.now()}`, { cache: "no-store" });
+        const response = await fetch(`${adminPortalUrl}/api/system-status?fresh=${Date.now()}`, {
+          cache: "no-store",
+        });
 
         if (!response.ok) {
           throw new Error(`System status request failed: ${response.status}`);
@@ -128,18 +137,18 @@ const Footer = () => {
   return (
     <Section crosses className="!px-0 !py-10">
       <div className="container">
-        {/* Top Row - Logo, Moto, and Navigation */}
+        {/* Top Row - Logo, Motto, and Navigation */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-10">
-          {/* Logo and Moto */}
+          {/* Logo and Motto */}
           <div className="flex flex-col items-center md:items-start">
             <div className="flex items-center gap-3 mb-7">
-            <img src={brainwave} className="w-[4rem]" height={50} alt="Globsoft Tech logo" />
-              
+              <Link to="/">
+                <img src={brainwave} className="w-[4rem]" height={50} alt="Globsoft Tech logo" />
+              </Link>
             </div>
             <span className="inline-block relative">
-
-            {brandMotto}{" "}
-             <img
+              {brandMotto}{" "}
+              <img
                 src={curve}
                 className="absolute top-full left-0 w-full xl:-mt-1"
                 width={624}
@@ -150,36 +159,45 @@ const Footer = () => {
             <br />
 
             <p className="caption text-n-0 text-center md:text-left">
-            Bharatpur - 7 Chitwan, 44200 <br />
-            Madi Thori Street, Nepal<br />
-            Phone: +977 9802922270 <br />
-            Mail: info.globsoft@gmail.com <br />
-            PAN: 162747847
-           
-            
+              Bharatpur - 7 Chitwan, 44200 <br />
+              Madi Thori Street, Nepal
+              <br />
+              Phone: +977 9802922270 <br />
+              Mail: info.globsoft@gmail.com <br />
+              PAN: 162747847
             </p>
           </div>
 
-          {/* Quick Links */}
-          <div className="grid grid-cols-2 md:flex gap-8 md:gap-15">
-            <a href="#" className="caption text-n-4 hover:text-n-1 transition-colors">
-              Home
-            </a>
-            <a href="#clients" className="caption text-n-4 hover:text-n-1 transition-colors">
-              Our Clients
-            </a>
-            <a href="#features" className="caption text-n-4 hover:text-n-1 transition-colors">
-              Services
-            </a>
-            <a href="/blog" className="caption text-n-4 hover:text-n-1 transition-colors">
-              Blog
-            </a>
-            <a href="#contact" className="caption text-n-4 hover:text-n-1 transition-colors">
-            Contact
-            </a>
+          {/* ✅ Auto-Updated Quick Links from src/constants/index.js */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:flex md:flex-wrap gap-6 md:gap-10">
+            {navigation.map((item) => {
+              const isExternal = item.url?.startsWith("http");
+              const targetUrl = formatNavUrl(item.url);
+
+              return isExternal ? (
+                <a
+                  key={item.id}
+                  href={item.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="caption text-n-4 hover:text-n-1 transition-colors"
+                >
+                  {item.title}
+                </a>
+              ) : (
+                <Link
+                  key={item.id}
+                  to={targetUrl}
+                  className="caption text-n-4 hover:text-n-1 transition-colors"
+                >
+                  {item.title}
+                </Link>
+              );
+            })}
           </div>
         </div>
 
+        {/* Newsletter Section */}
         <div className="mb-10 rounded-2xl border border-n-6 bg-n-7/60 p-4 sm:p-6 md:flex md:items-center md:justify-between md:gap-8">
           <div className="mb-5 md:mb-0">
             <h2 className="h5 mb-2">Stay updated</h2>
@@ -187,7 +205,9 @@ const Footer = () => {
           </div>
           <form className="newsletter-form w-full md:max-w-xl" onSubmit={handleNewsletterSubmit}>
             <div className="newsletter-fields flex flex-col gap-3 sm:flex-row">
-              <label className="sr-only" htmlFor="newsletter-email">Email address</label>
+              <label className="sr-only" htmlFor="newsletter-email">
+                Email address
+              </label>
               <input
                 id="newsletter-email"
                 name="email"
@@ -218,7 +238,9 @@ const Footer = () => {
               </p>
             )}
             <p
-              className={`mt-3 body-2 ${newsletterState.status === "success" ? "text-color-4" : "text-color-3"}`}
+              className={`mt-3 body-2 ${
+                newsletterState.status === "success" ? "text-color-4" : "text-color-3"
+              }`}
               role="status"
               aria-live="polite"
             >
@@ -247,8 +269,14 @@ const Footer = () => {
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
-            <div className="flex items-center gap-2 caption text-n-4" aria-label={systemStatus.message}>
-              <span className={`status-dot status-dot-${statusType} h-2 w-2 rounded-full`} aria-hidden="true" />
+            <div
+              className="flex items-center gap-2 caption text-n-4"
+              aria-label={systemStatus.message}
+            >
+              <span
+                className={`status-dot status-dot-${statusType} h-2 w-2 rounded-full`}
+                aria-hidden="true"
+              />
               <span>{systemStatus.message}</span>
             </div>
 
@@ -262,17 +290,17 @@ const Footer = () => {
             </a>
 
             <ul className="flex gap-5 flex-wrap">
-            {socials.map((item) => (
-              <a
-                key={item.id}
-                href={item.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center w-10 h-10 bg-n-7 rounded-full transition-colors hover:bg-n-6"
-              >
-                <img src={item.iconUrl} width={16} height={16} alt={item.title} />
-              </a>
-            ))}
+              {socials.map((item) => (
+                <a
+                  key={item.id}
+                  href={item.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center w-10 h-10 bg-n-7 rounded-full transition-colors hover:bg-n-6"
+                >
+                  <img src={item.iconUrl} width={16} height={16} alt={item.title} />
+                </a>
+              ))}
             </ul>
           </div>
         </div>
