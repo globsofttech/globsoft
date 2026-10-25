@@ -65,7 +65,6 @@ const HomePage = () => {
         <Services />
         <Pricing />
         {/* <Roadmap /> */}
-        <Team />
         <Contact />
         <Footer />
       </div>
@@ -107,6 +106,20 @@ const BlogPostPage = () => {
     </>
   );
 };
+const Team = () => {
+  return (
+    <>
+      <div className="overflow-hidden">
+        <OfferBanner />
+        <Header />
+        <Team />
+        <Footer />
+      </div>
+      <ButtonGradient />
+      <WhatsAppButton />
+    </>
+  );
+};
 
 const App = () => {
   return (
@@ -115,6 +128,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/blog" element={<BlogPage />} />
+        <Route path="/team" element={<Team />} />
         <Route path="/blog/:slug" element={<BlogPostPage />} />
         <Route
           path="/order"
