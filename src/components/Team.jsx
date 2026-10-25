@@ -7,11 +7,11 @@ import souryaImg from "../assets/sourya.png";
 import ankitImg from "../assets/ankit.jpg";
 
 const teamMembers = [
-  {
+ {
     id: "1",
     name: "Rajan Poudel",
     role: "Founder & CEO",
-    bio: "Passionate self-learned software developer and founder of GlobSoft Inc. MBBS Student at Chitwan Medical College.",
+    bio: "Self-taught software and web developer, and Founder of Globsoft Tech. Currently pursuing an MBBS at Chitwan Medical College, combining technical architecture with digital innovation.",
     image: rajanImg,
     email: "rajanpoudel.np@gmail.com",
     socials: {
