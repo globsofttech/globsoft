@@ -16,6 +16,8 @@ import Seo from "./components/Seo";
 import OfferBanner from "./components/OfferBanner";
 import BlogList from "./components/BlogList";
 import BlogPost from "./components/BlogPost";
+import Team from "./components/Team";
+import CookieConsent from "./components/CookieConsent";
 
 // Automatically scrolls to anchor elements across page navigation and SPA route changes
 const ScrollToAnchor = () => {
@@ -63,9 +65,11 @@ const HomePage = () => {
         <Services />
         <Pricing />
         {/* <Roadmap /> */}
+        <Team />
         <Contact />
         <Footer />
       </div>
+      <CookieConsent />
       <ButtonGradient />
       <WhatsAppButton />
     </>
