@@ -80,7 +80,9 @@ const PricingList = () => {
 
           <Button
             className="mb-6 w-full"
-            href={item.price ? "/order" : "#contact"}
+            href={item.price 
+              ? `/order?package=${encodeURIComponent(item.title)}&price=${encodeURIComponent(item.price)}`
+              : `/order?package=${encodeURIComponent(item.title)}`}
             white={!!item.price}
           >
             {item.price ? "Order Now" : "Contact us"}

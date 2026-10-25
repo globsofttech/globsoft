@@ -266,7 +266,7 @@ const BlogPost = () => {
         {blog.image_url && (
           <img
             className="blog-post-image"
-            src={`${apiBase}${blog.image_url}`}
+            src={blog.image_url.startsWith('http://') || blog.image_url.startsWith('https://') || blog.image_url.startsWith('data:') ? blog.image_url : `${apiBase}${blog.image_url}`}
             alt={blog.title}
             itemProp="image"
           />
@@ -382,7 +382,7 @@ const BlogPost = () => {
                 >
                   {rel.image_url && (
                     <img
-                      src={`${apiBase}${rel.image_url}`}
+                      src={rel.image_url.startsWith('http://') || rel.image_url.startsWith('https://') || rel.image_url.startsWith('data:') ? rel.image_url : `${apiBase}${rel.image_url}`}
                       alt={rel.title}
                       loading="lazy"
                       className="blog-related-img"

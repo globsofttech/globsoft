@@ -96,6 +96,49 @@ export const companyLogos = [
   { logo: notification2, url: "https://our-bakery.github.io/" },
 ];
 
+export const fallbackTestimonials = [
+  {
+    id: "0",
+    name: "Samira Sharma",
+    role: "Owner & Host",
+    company: "Samira Homestay",
+    logo: notification5,
+    quote: "Globsoft Tech built an exceptional website for our homestay. Inquiries from international and domestic guests increased dramatically right after launching!",
+    rating: 5,
+    url: "https://samirahomestay.com/",
+  },
+  {
+    id: "1",
+    name: "Arpan Sharma",
+    role: "Editor-in-Chief",
+    company: "News Arpan",
+    logo: notification4,
+    quote: "Our news portal requires lightning-fast load times and high stability under heavy daily traffic. Globsoft Tech delivered a rock-solid, mobile-optimized experience.",
+    rating: 5,
+    url: "https://newsarpan.rf.gd/",
+  },
+  {
+    id: "2",
+    name: "Bikash Thapa",
+    role: "Managing Director",
+    company: "Everest Auto Repair",
+    logo: notification3,
+    quote: "Partnering with Globsoft Tech revolutionized our digital presence. Our customers now easily discover our auto services and book repair appointments directly online.",
+    rating: 5,
+    url: "https://globsofttech.github.io/EverestAutoRepair/",
+  },
+  {
+    id: "3",
+    name: "Sunita Adhikari",
+    role: "Founder & Head Baker",
+    company: "Our Bakery",
+    logo: notification2,
+    quote: "The team at Globsoft crafted a delightful, appetizing website for Our Bakery. It makes showcasing our bakery menu and catering offerings effortless.",
+    rating: 5,
+    url: "https://our-bakery.github.io/",
+  },
+];
+
 export const brainwaveServices = [
   "Mobile-optimized designs that convert visitors",
   "Built-in SEO to attract more customers",

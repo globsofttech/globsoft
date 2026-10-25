@@ -285,7 +285,7 @@ const BlogList = () => {
                   aria-hidden="true"
                 >
                   <img
-                    src={`${apiBase}${blog.image_url}`}
+                    src={blog.image_url.startsWith('http://') || blog.image_url.startsWith('https://') || blog.image_url.startsWith('data:') ? blog.image_url : `${apiBase}${blog.image_url}`}
                     alt={blog.title}
                     loading="lazy"
                     className="blog-card-img"

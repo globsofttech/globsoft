@@ -1,6 +1,6 @@
 // src/components/OrderNow.jsx
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import Section from './Section';
 import Heading from './Heading';
 import Button from './Button';
@@ -13,8 +13,19 @@ import OfferBanner from './OfferBanner';
 
 const OrderNow = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const initialPackage = searchParams.get('package') || '';
+  const initialPrice = searchParams.get('price') || '';
+
+  const [selectedPackage, setSelectedPackage] = useState(initialPackage);
+  const [selectedPrice, setSelectedPrice] = useState(initialPrice);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => {
+    if (initialPackage) setSelectedPackage(initialPackage);
+    if (initialPrice) setSelectedPrice(initialPrice);
+  }, [initialPackage, initialPrice]);
 
   const adminPortalUrl = (
     import.meta.env.VITE_ADMIN_PORTAL_URL || "https://adminglobsoft.vercel.app"
@@ -26,12 +37,15 @@ const OrderNow = () => {
 
     const form = e.target;
     const formData = new FormData(form);
+    const serviceVal = formData.get('service') || selectedPackage || 'Custom Order';
     const data = {
       name: formData.get('name'),
       email: formData.get('email'),
       phone: formData.get('phone'),
       company: formData.get('company'),
-      service: formData.get('service'),
+      service: serviceVal,
+      package: selectedPackage || serviceVal,
+      price: selectedPrice,
       message: formData.get('message'),
     };
 
@@ -139,7 +153,46 @@ const OrderNow = () => {
                 </div>
                 
                 <div className="relative z-1">
+                  {/* Selected Package Banner */}
+                  {selectedPackage && (
+                    <div className="mb-8 p-5 rounded-2xl bg-gradient-to-r from-purple-500/15 via-cyan-500/10 to-n-7 border border-purple-500/30 flex items-center justify-between flex-wrap gap-4">
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 rounded-xl bg-purple-500/20 border border-purple-500/40 flex items-center justify-center text-purple-300">
+                          <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                          </svg>
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs font-mono uppercase tracking-wider text-purple-400">Selected Package</span>
+                            <span className="px-2 py-0.5 rounded-full text-[0.65rem] font-bold bg-green-500/15 text-green-400 border border-green-500/30">Auto Selected</span>
+                          </div>
+                          <h3 className="text-xl font-bold text-white flex items-center gap-2.5 mt-0.5">
+                            {selectedPackage}
+                            {selectedPrice && (
+                              <span className="text-sm font-semibold text-cyan-300 bg-cyan-500/15 px-3 py-0.5 rounded-full border border-cyan-500/30">
+                                रु {selectedPrice}
+                              </span>
+                            )}
+                          </h3>
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSelectedPackage('');
+                          setSelectedPrice('');
+                        }}
+                        className="text-xs text-n-4 hover:text-white transition-colors underline"
+                      >
+                        Change or clear package
+                      </button>
+                    </div>
+                  )}
+
                   <form onSubmit={handleSubmit}>
+                    <input type="hidden" name="package" value={selectedPackage} />
+                    <input type="hidden" name="price" value={selectedPrice} />
                     {/* Name and Email - Side by side on desktop */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                       <div>
@@ -216,9 +269,17 @@ const OrderNow = () => {
                         }}
                         id="service"
                         name="service"
+                        value={selectedPackage || undefined}
+                        onChange={(e) => setSelectedPackage(e.target.value)}
                         required
                       >
-                        <option value="">Select a service</option>
+                        <option value="">Select a service or package</option>
+                        {selectedPackage && !["Starter Website", "Business Website", "Enterprise Digital Suite", "Website Development", "Mobile App Development", "Graphics Designing Services", "Social Media Management", "Tech Solutions", "Search Engine Optimization (SEO)", "Other"].includes(selectedPackage) && (
+                          <option value={selectedPackage}>{selectedPackage}</option>
+                        )}
+                        <option value="Starter Website">Starter Website (रु 9,999)</option>
+                        <option value="Business Website">Business Website (रु 24,999)</option>
+                        <option value="Enterprise Digital Suite">Enterprise Digital Suite (Custom Quote)</option>
                         <option value="Website Development">Website Development</option>
                         <option value="Mobile App Development">Mobile App Development</option>
                         <option value="Graphics Designing Services">Graphics Designing Services</option>

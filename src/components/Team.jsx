@@ -1,13 +1,12 @@
-import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 
 // 👇 Make sure these filenames match your actual images inside src/assets/
 import rajanImg from "../assets/rajan.jpg";
 import souryaImg from "../assets/sourya.png";
 import ankitImg from "../assets/ankit.jpg";
 
-const teamMembers = [
- {
+const defaultTeamMembers = [
+  {
     id: "1",
     name: "Rajan Poudel",
     role: "Founder & CEO",
@@ -46,9 +45,64 @@ const teamMembers = [
 ];
 
 const Team = () => {
+  const [members, setMembers] = useState(defaultTeamMembers);
+
   useEffect(() => {
     window.scrollTo(0, 0);
+
+    const adminPortalUrl = (
+      import.meta.env.VITE_ADMIN_PORTAL_URL || "https://adminglobsoft.vercel.app"
+    ).replace(/\/+$/, "");
+    let active = true;
+
+    // Fetch team with authors who published >= 1 article
+    fetch(`${adminPortalUrl}/api/team?fresh=${Date.now()}`, { cache: "no-store" })
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to load team data");
+        return res.json();
+      })
+      .then((data) => {
+        if (active && Array.isArray(data) && data.length > 0) {
+          setMembers(data);
+        }
+      })
+      .catch(() => {
+        fetch(`${adminPortalUrl}/api/site-content?fresh=${Date.now()}`, { cache: "no-store" })
+          .then((res) => res.json())
+          .then((data) => {
+            if (active && Array.isArray(data.team_with_authors) && data.team_with_authors.length > 0) {
+              setMembers(data.team_with_authors);
+            } else if (active && Array.isArray(data.team) && data.team.length > 0) {
+              setMembers(data.team);
+            }
+          })
+          .catch(() => {});
+      });
+
+    return () => {
+      active = false;
+    };
   }, []);
+
+  const getMemberImage = (member) => {
+    if (member.id === "1" && (!member.image || member.image.includes("rajan"))) return rajanImg;
+    if (member.id === "2" && (!member.image || member.image.includes("sourya"))) return souryaImg;
+    if (member.id === "3" && (!member.image || member.image.includes("ankit"))) return ankitImg;
+    if (member.image) {
+      if (
+        member.image.startsWith("http://") ||
+        member.image.startsWith("https://") ||
+        member.image.startsWith("data:")
+      ) {
+        return member.image;
+      }
+      const adminPortalUrl = (
+        import.meta.env.VITE_ADMIN_PORTAL_URL || "https://adminglobsoft.vercel.app"
+      ).replace(/\/+$/, "");
+      return `${adminPortalUrl}${member.image}`;
+    }
+    return null;
+  };
 
   return (
     <section className="relative min-h-[calc(100vh-5.25rem)] py-16 lg:py-24 bg-[#0E0C15] text-white overflow-hidden">
@@ -57,29 +111,6 @@ const Team = () => {
       <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="container relative z-10 mx-auto px-5 md:px-10 max-w-7xl">
-        {/* Back to Home Button */}
-        <div className="mb-8">
-          <Link
-            to="/"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-mono uppercase tracking-wider text-gray-300 hover:text-white transition-all"
-          >
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M10 19l-7-7m0 0l7-7m-7 7h18"
-              />
-            </svg>
-            Back to Home
-          </Link>
-        </div>
-
         {/* Section Header */}
         <div className="max-w-3xl mx-auto text-center mb-16 md:mb-20">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-purple-500/30 bg-purple-500/10 text-purple-300 text-xs font-mono uppercase tracking-widest mb-4">
@@ -89,165 +120,187 @@ const Team = () => {
             The Minds Behind Our Innovation
           </h1>
           <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
-            We are a collective of engineers, designers, and strategists dedicated
-            to building next-generation digital products that empower businesses
+            We are a collective of engineers, designers, strategists, and writers
+            dedicated to building next-generation digital products that empower businesses
             worldwide.
           </p>
         </div>
 
         {/* Team Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {teamMembers.map((member) => (
-            <div
-              key={member.id}
-              className="group relative rounded-2xl bg-[#15131D] border border-white/10 p-6 transition-all duration-300 hover:-translate-y-2 hover:border-purple-500/50 hover:shadow-[0_0_30px_rgba(168,85,247,0.15)] flex flex-col justify-between"
-            >
-              <div>
-                {/* Avatar Container */}
-                <div className="relative w-full h-72 mb-6 rounded-xl overflow-hidden bg-[#1D1A27]">
-                  <img
-                    src={member.image}
-                    alt={member.name}
-                    className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#15131D] via-transparent to-transparent opacity-60" />
-                </div>
+          {members.map((member) => {
+            const imgSrc = getMemberImage(member);
 
-                {/* Member Info */}
-                <div className="mb-4">
-                  <h3 className="text-xl font-semibold text-white group-hover:text-purple-400 transition-colors">
-                    {member.name}
-                  </h3>
-                  <p className="text-xs font-mono uppercase tracking-wider text-purple-400/90 mt-1">
-                    {member.role}
+            return (
+              <div
+                key={member.id}
+                className="group relative rounded-2xl bg-[#15131D] border border-white/10 p-6 transition-all duration-300 hover:-translate-y-2 hover:border-purple-500/50 hover:shadow-[0_0_30px_rgba(168,85,247,0.15)] flex flex-col justify-between"
+              >
+                <div>
+                  {/* Avatar Container */}
+                  <div className="relative w-full h-72 mb-6 rounded-xl overflow-hidden bg-[#1D1A27] flex items-center justify-center">
+                    {imgSrc ? (
+                      <img
+                        src={imgSrc}
+                        alt={member.name}
+                        className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                        loading="lazy"
+                        onError={(e) => {
+                          e.target.style.display = "none";
+                          if (e.target.nextSibling) {
+                            e.target.nextSibling.style.display = "flex";
+                          }
+                        }}
+                      />
+                    ) : null}
+                    <div
+                      className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-purple-900/30 to-cyan-900/30 text-purple-300"
+                      style={{ display: imgSrc ? "none" : "flex" }}
+                    >
+                      <div className="w-20 h-20 rounded-full bg-purple-500/20 border border-purple-500/40 flex items-center justify-center text-2xl font-bold">
+                        {(member.name || "T")[0]}
+                      </div>
+                      <span className="text-xs font-mono uppercase tracking-wider text-purple-400/80 mt-3">
+                        {member.role || "Team Member"}
+                      </span>
+                    </div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#15131D] via-transparent to-transparent opacity-60 pointer-events-none" />
+                  </div>
+
+                  {/* Member Info */}
+                  <div className="mb-4">
+                    <div className="flex items-center justify-between gap-2">
+                      <h3 className="text-xl font-semibold text-white group-hover:text-purple-400 transition-colors">
+                        {member.name}
+                      </h3>
+                      {member.is_author && (
+                        <span className="text-[0.65rem] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/20">
+                          Writer
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-xs font-mono uppercase tracking-wider text-purple-400/90 mt-1">
+                      {member.role}
+                    </p>
+                  </div>
+
+                  <p className="text-sm text-gray-400 leading-relaxed mb-6">
+                    {member.bio}
                   </p>
                 </div>
 
-                <p className="text-sm text-gray-400 leading-relaxed mb-6">
-                  {member.bio}
-                </p>
-              </div>
-
-              <div>
-                {/* Direct Contact Links (Email & Phone) */}
-                <div className="space-y-2.5 mb-5 pt-4 border-t border-white/10 text-sm">
+                <div>
+                  {/* Direct Contact Links (Email) */}
                   {member.email && (
-                    <a
-                      href={`mailto:${member.email}`}
-                      className="flex items-center gap-2.5 text-gray-400 hover:text-purple-400 transition-colors break-all"
-                    >
-                      <svg
-                        className="w-4 h-4 text-purple-400 shrink-0"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        viewBox="0 0 24 24"
+                    <div className="space-y-2.5 mb-5 pt-4 border-t border-white/10 text-sm">
+                      <a
+                        href={`mailto:${member.email}`}
+                        className="flex items-center gap-2.5 text-gray-400 hover:text-purple-400 transition-colors break-all"
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                        />
-                      </svg>
-                      <span>{member.email}</span>
-                    </a>
+                        <svg
+                          className="w-4 h-4 text-purple-400 shrink-0"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                          />
+                        </svg>
+                        <span className="truncate">{member.email}</span>
+                      </a>
+                    </div>
                   )}
 
-                  {member.phone && (
-                    <a
-                      href={`tel:${member.phone.replace(/\s+/g, "")}`}
-                      className="flex items-center gap-2.5 text-gray-400 hover:text-purple-400 transition-colors"
-                    >
-                      <svg
-                        className="w-4 h-4 text-purple-400 shrink-0"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        viewBox="0 0 24 24"
+                  {/* Social Links */}
+                  <div className="flex items-center gap-3 pt-4 border-t border-white/10">
+                    {member.socials?.instagram && (
+                      <a
+                        href={member.socials.instagram}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`${member.name} Instagram`}
+                        className="w-9 h-9 rounded-lg bg-white/5 hover:bg-purple-600/20 border border-white/10 hover:border-purple-500/40 flex items-center justify-center text-gray-400 hover:text-white transition-all"
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-                        />
-                      </svg>
-                      <span>{member.phone}</span>
-                    </a>
-                  )}
-                </div>
+                        <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                        </svg>
+                      </a>
+                    )}
 
-                {/* Social Links */}
-                <div className="flex items-center gap-3 pt-4 border-t border-white/10">
-                  {member.socials?.instagram && (
-                    <a
-                      href={member.socials.instagram}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={`${member.name} Instagram`}
-                      className="w-9 h-9 rounded-lg bg-white/5 hover:bg-purple-600/20 border border-white/10 hover:border-purple-500/40 flex items-center justify-center text-gray-400 hover:text-white transition-all"
-                    >
-                      <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-                      </svg>
-                    </a>
-                  )}
-
-                  {member.socials?.linkedin && (
-                    <a
-                      href={member.socials.linkedin}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={`${member.name} LinkedIn`}
-                      className="w-9 h-9 rounded-lg bg-white/5 hover:bg-purple-600/20 border border-white/10 hover:border-purple-500/40 flex items-center justify-center text-gray-400 hover:text-white transition-all"
-                    >
-                      <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                        <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z" />
-                      </svg>
-                    </a>
-                  )}
-
-                  {member.socials?.github && (
-                    <a
-                      href={member.socials.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={`${member.name} GitHub`}
-                      className="w-9 h-9 rounded-lg bg-white/5 hover:bg-purple-600/20 border border-white/10 hover:border-purple-500/40 flex items-center justify-center text-gray-400 hover:text-white transition-all"
-                    >
-                      <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                        <path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z" />
-                      </svg>
-                    </a>
-                  )}
-
-                  {/* Quick Mail Icon Button */}
-                  {member.email && (
-                    <a
-                      href={`mailto:${member.email}`}
-                      aria-label={`Email ${member.name}`}
-                      className="w-9 h-9 rounded-lg bg-white/5 hover:bg-purple-600/20 border border-white/10 hover:border-purple-500/40 flex items-center justify-center text-gray-400 hover:text-white transition-all ml-auto"
-                      title={`Email ${member.name}`}
-                    >
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        viewBox="0 0 24 24"
+                    {member.socials?.linkedin && (
+                      <a
+                        href={member.socials.linkedin}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`${member.name} LinkedIn`}
+                        className="w-9 h-9 rounded-lg bg-white/5 hover:bg-purple-600/20 border border-white/10 hover:border-purple-500/40 flex items-center justify-center text-gray-400 hover:text-white transition-all"
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                        />
-                      </svg>
-                    </a>
-                  )}
+                        <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                          <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z" />
+                        </svg>
+                      </a>
+                    )}
+
+                    {member.socials?.github && (
+                      <a
+                        href={member.socials.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`${member.name} GitHub`}
+                        className="w-9 h-9 rounded-lg bg-white/5 hover:bg-purple-600/20 border border-white/10 hover:border-purple-500/40 flex items-center justify-center text-gray-400 hover:text-white transition-all"
+                      >
+                        <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                          <path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z" />
+                        </svg>
+                      </a>
+                    )}
+
+                    {member.socials?.twitter && (
+                      <a
+                        href={member.socials.twitter}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`${member.name} Twitter / X`}
+                        className="w-9 h-9 rounded-lg bg-white/5 hover:bg-purple-600/20 border border-white/10 hover:border-purple-500/40 flex items-center justify-center text-gray-400 hover:text-white transition-all"
+                      >
+                        <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                        </svg>
+                      </a>
+                    )}
+
+                    {/* Quick Mail Icon Button */}
+                    {member.email && (
+                      <a
+                        href={`mailto:${member.email}`}
+                        aria-label={`Email ${member.name}`}
+                        className="w-9 h-9 rounded-lg bg-white/5 hover:bg-purple-600/20 border border-white/10 hover:border-purple-500/40 flex items-center justify-center text-gray-400 hover:text-white transition-all ml-auto"
+                        title={`Email ${member.name}`}
+                      >
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                          />
+                        </svg>
+                      </a>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
