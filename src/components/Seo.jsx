@@ -17,6 +17,11 @@ const pageMetadata = {
       `${brandVision} Tell ${brandName} about your website, mobile app, or digital product and get a practical plan built around your goals.`,
     path: "/order",
   },
+  shop: {
+    title: `Shop Custom Mouse Pads, Keyboards & Mice | ${brandName}`,
+    description: `Shop high-precision mechanical keyboards, gaming mice, and custom printed desk mats with Cash on Delivery (COD) across Nepal.`,
+    path: "/shop",
+  },
 };
 
 const setMeta = (attribute, value, content) => {

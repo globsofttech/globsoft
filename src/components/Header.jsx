@@ -6,12 +6,14 @@ import { brainwave } from "../assets";
 import { navigation } from "../constants";
 import Button from "./Button";
 import MenuSvg from "../assets/svg/MenuSvg";
+import { useCart } from "../context/CartContext";
 import { HamburgerMenu } from "./design/Header";
 
 const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [openNavigation, setOpenNavigation] = useState(false);
+  const { totalCount, openCart } = useCart();
 
   useEffect(() => {
     return () => {
@@ -156,8 +158,28 @@ const Header = () => {
               );
             })}
 
-            <div className="lg:hidden mt-6 flex flex-col items-center gap-3">
-              <Button href="/order" onClick={handleClick}>
+            <div className="lg:hidden mt-6 flex flex-col items-center gap-3 w-full max-w-xs">
+              <button
+                type="button"
+                onClick={() => {
+                  handleClick();
+                  openCart();
+                }}
+                className="w-full py-2.5 px-6 rounded-xl bg-n-7 border border-n-6 text-n-1 text-xs font-semibold flex items-center justify-center gap-2 hover:border-color-1/40"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <circle cx="9" cy="21" r="1" />
+                  <circle cx="20" cy="21" r="1" />
+                  <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+                </svg>
+                <span>View Cart</span>
+                {totalCount > 0 && (
+                  <span className="px-2 py-0.5 rounded-full bg-color-1 text-n-1 text-[10px] font-bold">
+                    {totalCount}
+                  </span>
+                )}
+              </button>
+              <Button href="/order" onClick={handleClick} className="w-full">
                 Order Now
               </Button>
             </div>
@@ -165,6 +187,26 @@ const Header = () => {
 
           <HamburgerMenu />
         </nav>
+
+        {/* Shopping Cart Trigger */}
+        <button
+          type="button"
+          onClick={openCart}
+          className="relative ml-auto lg:ml-6 mr-3 lg:mr-4 p-2.5 rounded-xl border border-n-6 bg-n-7 hover:bg-n-6 text-n-1 transition-all flex items-center justify-center hover:border-color-1/40 group"
+          aria-label="Open Shopping Cart"
+          title="Shopping Cart"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="group-hover:text-color-1 transition-colors">
+            <circle cx="9" cy="21" r="1" />
+            <circle cx="20" cy="21" r="1" />
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+          </svg>
+          {totalCount > 0 && (
+            <span className="absolute -top-1.5 -right-1.5 min-w-[20px] h-5 px-1 rounded-full bg-color-1 text-n-1 text-[10px] font-bold flex items-center justify-center shadow-lg shadow-color-1/40">
+              {totalCount > 99 ? "99+" : totalCount}
+            </span>
+          )}
+        </button>
 
         <Button className="hidden lg:flex" href="/order">
           Order Now

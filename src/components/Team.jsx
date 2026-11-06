@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 // 👇 Make sure these filenames match your actual images inside src/assets/
 import rajanImg from "../assets/rajan.jpg";

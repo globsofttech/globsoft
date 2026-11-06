@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 const STORAGE_KEY = "globsoft_cookie_consent";
 
@@ -104,7 +104,7 @@ const CookieConsent = () => {
             <p className="text-xs sm:text-sm text-gray-300 leading-relaxed mb-4">
               We use cookies to enhance your browsing experience, serve
               personalized content, and analyze our site traffic. By clicking{" "}
-              <span className="text-white font-medium">"Accept All"</span>, you
+              <span className="text-white font-medium">&quot;Accept All&quot;</span>, you
               consent to our use of cookies. Read our{" "}
               <button
                 type="button"

@@ -68,6 +68,12 @@ export const navigation = [
     url: "#pricing",
   },
   {
+    id: "shop",
+    title: "Shop",
+    url: "/shop",
+    isPage: true,
+  },
+  {
     id: "4",
     title: "Blog",
     url: "/blog",

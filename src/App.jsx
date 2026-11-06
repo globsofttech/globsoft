@@ -19,6 +19,10 @@ import BlogList from "./components/BlogList";
 import BlogPost from "./components/BlogPost";
 import Team from "./components/Team";
 import CookieConsent from "./components/CookieConsent";
+import { CartProvider } from "./context/CartContext";
+import Shop from "./components/Shop";
+import CartDrawer from "./components/CartDrawer";
+import CheckoutModal from "./components/CheckoutModal";
 
 // Automatically scrolls to anchor elements across page navigation and SPA route changes
 const ScrollToAnchor = () => {
@@ -126,15 +130,33 @@ const TeamPage = () => {
   );
 };
 
-const App = () => {
+// Shop Page Component
+const ShopPage = () => {
   return (
     <>
+      <Seo page="shop" />
+      <div className="overflow-hidden">
+        <OfferBanner />
+        <Header />
+        <Shop />
+        <Footer />
+      </div>
+      <ButtonGradient />
+      <WhatsAppButton />
+    </>
+  );
+};
+
+const App = () => {
+  return (
+    <CartProvider>
       <ScrollToAnchor />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/blog" element={<BlogPage />} />
         {/* ✅ Uses TeamPage here */}
         <Route path="/team" element={<TeamPage />} />
+        <Route path="/shop" element={<ShopPage />} />
         <Route path="/blog/:slug" element={<BlogPostPage />} />
         <Route
           path="/order"
@@ -148,9 +170,13 @@ const App = () => {
         />
       </Routes>
 
+      {/* Global Shopping Cart & Cash on Delivery Checkout Modals */}
+      <CartDrawer />
+      <CheckoutModal />
+
       {/* ✅ Placed globally so cookie consent works on all pages */}
       <CookieConsent />
-    </>
+    </CartProvider>
   );
 };
 
