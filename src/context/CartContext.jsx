@@ -30,7 +30,9 @@ export const CartProvider = ({ children }) => {
 
   const [deliveryZone, setDeliveryZone] = useState(() => {
     try {
-      return localStorage.getItem(DELIVERY_ZONE_KEY) || "inside_valley";
+      const saved = localStorage.getItem(DELIVERY_ZONE_KEY);
+      if (saved === "outside_valley" || saved === "custom") return saved;
+      return "inside_valley";
     } catch {
       return "inside_valley";
     }
@@ -114,7 +116,6 @@ export const CartProvider = ({ children }) => {
   // Derived: Delivery fee calculated from zone / custom fee
   const deliveryFee = useMemo(() => {
     if (subtotal <= 0) return 0;
-    if (deliveryZone === "free") return 0;
     if (deliveryZone === "outside_valley") return 150;
     if (deliveryZone === "custom") return Math.max(0, Number(customDeliveryFee) || 0);
     // inside_valley standard
