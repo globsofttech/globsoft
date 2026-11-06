@@ -6,8 +6,6 @@ const CartContext = createContext(null);
 
 const CART_STORAGE_KEY = "globsoft_shop_cart";
 const DISCOUNT_STORAGE_KEY = "globsoft_shop_discount";
-const DELIVERY_ZONE_KEY = "globsoft_shop_delivery_zone";
-const CUSTOM_FEE_KEY = "globsoft_shop_custom_fee";
 
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState(() => {
@@ -25,25 +23,6 @@ export const CartProvider = ({ children }) => {
       return saved ? JSON.parse(saved) : null;
     } catch {
       return null;
-    }
-  });
-
-  const [deliveryZone, setDeliveryZone] = useState(() => {
-    try {
-      const saved = localStorage.getItem(DELIVERY_ZONE_KEY);
-      if (saved === "outside_valley" || saved === "custom") return saved;
-      return "inside_valley";
-    } catch {
-      return "inside_valley";
-    }
-  });
-
-  const [customDeliveryFee, setCustomDeliveryFee] = useState(() => {
-    try {
-      const saved = localStorage.getItem(CUSTOM_FEE_KEY);
-      return saved !== null ? Math.max(0, Number(saved)) : 100;
-    } catch {
-      return 100;
     }
   });
 
@@ -78,15 +57,15 @@ export const CartProvider = ({ children }) => {
     }
   }, [discountInfo]);
 
-  // Sync delivery fee & zone preferences to localStorage
+  // Cleanup legacy delivery fee keys if present
   useEffect(() => {
     try {
-      localStorage.setItem(DELIVERY_ZONE_KEY, deliveryZone);
-      localStorage.setItem(CUSTOM_FEE_KEY, String(customDeliveryFee));
-    } catch (e) {
-      console.warn("Could not save delivery preferences to localStorage", e);
+      localStorage.removeItem("globsoft_shop_delivery_zone");
+      localStorage.removeItem("globsoft_shop_custom_fee");
+    } catch {
+      // ignore
     }
-  }, [deliveryZone, customDeliveryFee]);
+  }, []);
 
   // Derived: Total items count
   const totalCount = useMemo(() => {
@@ -113,24 +92,15 @@ export const CartProvider = ({ children }) => {
     return Math.min(Number(value) || 0, subtotal);
   }, [discountInfo, subtotal]);
 
-  // Derived: Delivery fee calculated from zone / custom fee
+  // Derived: Flat delivery fee applicable to all (रु 150 across Nepal)
   const deliveryFee = useMemo(() => {
-    if (subtotal <= 0) return 0;
-    if (deliveryZone === "outside_valley") return 150;
-    if (deliveryZone === "custom") return Math.max(0, Number(customDeliveryFee) || 0);
-    // inside_valley standard
-    return 100;
-  }, [subtotal, deliveryZone, customDeliveryFee]);
+    return subtotal > 0 ? 150 : 0;
+  }, [subtotal]);
 
-  // Derived: Final COD total including subtotal, discount, and delivery fee
+  // Derived: Final COD total including subtotal, discount, and flat delivery fee
   const totalAmount = useMemo(() => {
-    return Math.max(0, subtotal - discountAmount + (subtotal > 0 ? deliveryFee : 0));
+    return Math.max(0, subtotal - discountAmount + deliveryFee);
   }, [subtotal, discountAmount, deliveryFee]);
-
-  const setDeliveryFeeManual = useCallback((fee) => {
-    setDeliveryZone("custom");
-    setCustomDeliveryFee(Math.max(0, Number(fee) || 0));
-  }, []);
 
   // Add Item to Cart
   const addToCart = useCallback((product, quantity = 1, customOptions = {}) => {
@@ -284,11 +254,6 @@ export const CartProvider = ({ children }) => {
     discountAmount,
     totalAmount,
     deliveryFee,
-    deliveryZone,
-    setDeliveryZone,
-    customDeliveryFee,
-    setCustomDeliveryFee,
-    setDeliveryFeeManual,
     discountInfo,
     discountError,
     isApplyingDiscount,

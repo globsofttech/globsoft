@@ -100,18 +100,18 @@ const Header = () => {
       }`}
       style={{ top: "var(--offer-header-offset, 0px)" }}
     >
-      <div className="flex items-center h-[4.75rem] lg:h-[5.25rem] px-4 sm:px-5 lg:px-6 xl:px-8 2xl:px-10">
+      <div className="flex items-center h-[4.75rem] lg:h-[5.25rem] px-5 lg:px-7.5 xl:px-10">
         <a
-          className="flex items-center flex-shrink-0 mr-3 lg:mr-4 xl:mr-6"
+          className="flex items-center w-[12rem] xl:mr-8"
           href="#hero"
           onClick={handleLogoClick}
           aria-label="Globsoft Tech Home"
         >
           <img
             src={brainwave}
-            className="w-10 h-10 lg:w-11 lg:h-11 xl:w-12 xl:h-12 object-contain"
-            width={48}
-            height={48}
+            className="w-11 h-11 lg:w-[3.25rem] lg:h-[3.25rem] object-contain"
+            width={52}
+            height={52}
             alt="Globsoft Tech logo"
           />
         </a>
@@ -129,9 +129,9 @@ const Header = () => {
 
               const itemClass = `block relative font-code text-xl sm:text-2xl uppercase text-n-1 transition-colors hover:text-color-1 ${
                 item.onlyMobile ? "lg:hidden" : ""
-              } px-6 py-3.5 sm:py-4 md:py-5 lg:py-6 xl:py-7 lg:px-2 xl:px-3.5 2xl:px-5 lg:text-[11px] xl:text-[12px] 2xl:text-xs lg:font-semibold lg:leading-5 whitespace-nowrap tracking-wider ${
-                isActive ? "z-2 lg:text-n-1 text-color-1" : "lg:text-n-1/60"
-              } lg:hover:text-n-1`;
+              } px-6 py-3.5 sm:py-4 md:py-5 lg:py-8 lg:-mr-0.25 lg:text-xs lg:font-semibold ${
+                isActive ? "z-2 lg:text-n-1 text-color-1" : "lg:text-n-1/50"
+              } lg:leading-5 lg:hover:text-n-1 xl:px-8 2xl:px-12 whitespace-nowrap`;
 
               if (item.isPage) {
                 return (
@@ -188,40 +188,38 @@ const Header = () => {
           <HamburgerMenu />
         </nav>
 
-        {/* Right Action Buttons */}
-        <div className="flex items-center gap-2 xl:gap-3 ml-auto flex-shrink-0">
-          <button
-            type="button"
-            onClick={openCart}
-            className="relative p-2 lg:p-2.5 rounded-xl border border-n-6 bg-n-7 hover:bg-n-6 text-n-1 transition-all flex items-center justify-center hover:border-color-1/40 group flex-shrink-0"
-            aria-label="Open Shopping Cart"
-            title="Shopping Cart"
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="group-hover:text-color-1 transition-colors">
-              <circle cx="9" cy="21" r="1" />
-              <circle cx="20" cy="21" r="1" />
-              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
-            </svg>
-            {totalCount > 0 && (
-              <span className="absolute -top-1.5 -right-1.5 min-w-[20px] h-5 px-1 rounded-full bg-color-1 text-n-1 text-[10px] font-bold flex items-center justify-center shadow-lg shadow-color-1/40">
-                {totalCount > 99 ? "99+" : totalCount}
-              </span>
-            )}
-          </button>
+        {/* Shopping Cart Trigger */}
+        <button
+          type="button"
+          onClick={openCart}
+          className="relative ml-auto lg:ml-6 mr-3 lg:mr-4 p-2.5 rounded-xl border border-n-6 bg-n-7 hover:bg-n-6 text-n-1 transition-all flex items-center justify-center hover:border-color-1/40 group flex-shrink-0"
+          aria-label="Open Shopping Cart"
+          title="Shopping Cart"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="group-hover:text-color-1 transition-colors">
+            <circle cx="9" cy="21" r="1" />
+            <circle cx="20" cy="21" r="1" />
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+          </svg>
+          {totalCount > 0 && (
+            <span className="absolute -top-1.5 -right-1.5 min-w-[20px] h-5 px-1 rounded-full bg-color-1 text-n-1 text-[10px] font-bold flex items-center justify-center shadow-lg shadow-color-1/40">
+              {totalCount > 99 ? "99+" : totalCount}
+            </span>
+          )}
+        </button>
 
-          <Button className="hidden lg:flex flex-shrink-0 px-4 xl:px-6 text-xs whitespace-nowrap" href="/order">
-            Order Now
-          </Button>
+        <Button className="hidden lg:flex flex-shrink-0" href="/order">
+          Order Now
+        </Button>
 
-          <Button
-            className="lg:hidden"
-            px="px-3"
-            onClick={toggleNavigation}
-            aria-label={openNavigation ? "Close menu" : "Open menu"}
-          >
-            <MenuSvg openNavigation={openNavigation} />
-          </Button>
-        </div>
+        <Button
+          className="ml-auto lg:hidden"
+          px="px-3"
+          onClick={toggleNavigation}
+          aria-label={openNavigation ? "Close menu" : "Open menu"}
+        >
+          <MenuSvg openNavigation={openNavigation} />
+        </Button>
       </div>
     </div>
   );

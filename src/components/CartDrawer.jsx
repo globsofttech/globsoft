@@ -10,10 +10,6 @@ const CartDrawer = () => {
     discountAmount,
     totalAmount,
     deliveryFee,
-    deliveryZone,
-    setDeliveryZone,
-    customDeliveryFee,
-    setCustomDeliveryFee,
     discountInfo,
     discountError,
     isApplyingDiscount,
@@ -232,90 +228,6 @@ const CartDrawer = () => {
                 )}
               </div>
 
-              {/* Delivery Zone / Fee Selection */}
-              <div className="p-3 rounded-xl bg-n-7/80 border border-n-6 space-y-2">
-                <div className="flex items-center justify-between text-xs font-semibold text-n-2">
-                  <span className="flex items-center gap-1.5">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-color-1">
-                      <rect x="1" y="3" width="15" height="13" />
-                      <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
-                      <circle cx="5.5" cy="18.5" r="2.5" />
-                      <circle cx="18.5" cy="18.5" r="2.5" />
-                    </svg>
-                    Delivery Location & Fee
-                  </span>
-                  <span className="text-color-1 font-bold">
-                    + रु {deliveryFee.toLocaleString()}
-                  </span>
-                </div>
-
-                <div className="grid grid-cols-2 gap-1.5 text-[11px]">
-                  <button
-                    type="button"
-                    onClick={() => setDeliveryZone("inside_valley")}
-                    className={`px-2.5 py-1.5 rounded-lg border text-left transition-all flex flex-col ${
-                      deliveryZone === "inside_valley"
-                        ? "bg-color-1/15 border-color-1 text-color-1 font-semibold"
-                        : "bg-n-8/60 border-n-6 text-n-3 hover:border-n-5"
-                    }`}
-                  >
-                    <span>Kathmandu Valley</span>
-                    <strong className="text-[10px]">रु 100</strong>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setDeliveryZone("outside_valley")}
-                    className={`px-2.5 py-1.5 rounded-lg border text-left transition-all flex flex-col ${
-                      deliveryZone === "outside_valley"
-                        ? "bg-color-1/15 border-color-1 text-color-1 font-semibold"
-                        : "bg-n-8/60 border-n-6 text-n-3 hover:border-n-5"
-                    }`}
-                  >
-                    <span>Outside Valley</span>
-                    <strong className="text-[10px]">रु 150</strong>
-                  </button>
-                </div>
-
-                {/* Custom Fee Toggle & Input */}
-                <div className="pt-1.5 border-t border-n-6/60 space-y-2">
-                  <div className="flex items-center justify-between text-[11px]">
-                    <button
-                      type="button"
-                      onClick={() => setDeliveryZone(deliveryZone === "custom" ? "inside_valley" : "custom")}
-                      className={`hover:underline flex items-center gap-1.5 ${
-                        deliveryZone === "custom" ? "text-color-1 font-bold" : "text-n-4 hover:text-n-2"
-                      }`}
-                    >
-                      <span className={`w-2.5 h-2.5 rounded-full border ${
-                        deliveryZone === "custom" ? "border-color-1 bg-color-1" : "border-n-5"
-                      }`} />
-                      <span>Put custom delivery fee</span>
-                    </button>
-                    {deliveryZone === "custom" && (
-                      <span className="text-[10px] text-color-1 font-semibold">Active</span>
-                    )}
-                  </div>
-
-                  {deliveryZone === "custom" && (
-                    <div className="flex items-center justify-between gap-2 p-2 rounded-lg bg-n-8 border border-color-1/40">
-                      <span className="text-[11px] text-n-3">Custom Fee (रु):</span>
-                      <div className="flex items-center gap-1">
-                        <span className="text-xs text-n-4">रु</span>
-                        <input
-                          type="number"
-                          min="0"
-                          step="10"
-                          value={customDeliveryFee}
-                          onChange={(e) => setCustomDeliveryFee(Math.max(0, Number(e.target.value) || 0))}
-                          className="w-20 bg-n-7 border border-color-1/50 rounded-lg px-2 py-0.5 text-xs text-n-1 font-bold focus:outline-none"
-                        />
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-
               {/* Price Breakdown */}
               <div className="space-y-1.5 text-xs">
                 <div className="flex justify-between text-n-3">
@@ -334,7 +246,7 @@ const CartDrawer = () => {
                   <span className="flex items-center gap-1.5">
                     Shipping & Delivery
                     <span className="px-1.5 py-0.5 rounded text-[10px] bg-color-1/15 text-color-1 font-semibold uppercase">
-                      COD Delivery
+                      Flat Rate (All Nepal)
                     </span>
                   </span>
                   <span className="text-n-1 font-medium">

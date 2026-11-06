@@ -54,7 +54,7 @@ export const navigation = [
   },
   {
     id: "1",
-    title: "Our Clients",
+    title: "Clients",
     url: "#clients",
   },
   {
@@ -68,21 +68,16 @@ export const navigation = [
     url: "#pricing",
   },
   {
-    id: "shop",
-    title: "Shop",
-    url: "/shop",
-    isPage: true,
-  },
-  {
     id: "4",
-    title: "Blog",
-    url: "/blog",
+    title: "Team",
+    url: "/team",
     isPage: true,
   },
   {
     id: "5",
-    title: "Our Team",
-    url: "/team",
+    title: "Blog",
+    url: "/blog",
+    isPage: true,
   },
   {
     id: "6",

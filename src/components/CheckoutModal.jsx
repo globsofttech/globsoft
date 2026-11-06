@@ -9,10 +9,6 @@ const CheckoutModal = () => {
     discountAmount,
     totalAmount,
     deliveryFee,
-    deliveryZone,
-    setDeliveryZone,
-    customDeliveryFee,
-    setCustomDeliveryFee,
     discountInfo,
     isCheckoutOpen,
     closeCheckout,
@@ -210,7 +206,7 @@ const CheckoutModal = () => {
               </div>
 
               <div className="flex justify-between text-xs text-n-3">
-                <span>Shipping & Delivery (COD):</span>
+                <span>Shipping & Delivery (All Nepal):</span>
                 <span className="font-semibold text-color-1">
                   रु {deliveryFee.toLocaleString()}
                 </span>
@@ -394,100 +390,6 @@ const CheckoutModal = () => {
               </div>
             </div>
 
-            {/* Delivery Fee & Zone Selector */}
-            <div className="p-4 rounded-xl bg-n-7 border border-n-6 space-y-3">
-              <div className="flex items-center justify-between text-xs font-semibold text-n-1">
-                <span className="flex items-center gap-2 text-color-1">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <rect x="1" y="3" width="15" height="13" />
-                    <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
-                    <circle cx="5.5" cy="18.5" r="2.5" />
-                    <circle cx="18.5" cy="18.5" r="2.5" />
-                  </svg>
-                  Delivery Zone & Shipping Fee
-                </span>
-                <span className="text-xs font-bold text-color-1">
-                  + रु {deliveryFee.toLocaleString()}
-                </span>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-                <label className={`p-2.5 rounded-lg border cursor-pointer transition-all flex items-center justify-between ${
-                  deliveryZone === "inside_valley" ? "bg-color-1/15 border-color-1 text-color-1 font-semibold" : "bg-n-8/50 border-n-6 text-n-3 hover:border-n-5"
-                }`}>
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="radio"
-                      name="deliveryZone"
-                      checked={deliveryZone === "inside_valley"}
-                      onChange={() => setDeliveryZone("inside_valley")}
-                      className="accent-color-1"
-                    />
-                    <span>Kathmandu Valley</span>
-                  </div>
-                  <strong className="text-xs">रु 100</strong>
-                </label>
-
-                <label className={`p-2.5 rounded-lg border cursor-pointer transition-all flex items-center justify-between ${
-                  deliveryZone === "outside_valley" ? "bg-color-1/15 border-color-1 text-color-1 font-semibold" : "bg-n-8/50 border-n-6 text-n-3 hover:border-n-5"
-                }`}>
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="radio"
-                      name="deliveryZone"
-                      checked={deliveryZone === "outside_valley"}
-                      onChange={() => setDeliveryZone("outside_valley")}
-                      className="accent-color-1"
-                    />
-                    <span>Outside Valley</span>
-                  </div>
-                  <strong className="text-xs">रु 150</strong>
-                </label>
-              </div>
-
-              {/* Custom Delivery Fee Option */}
-              <div className="pt-2 border-t border-n-6 space-y-2">
-                <div className="flex items-center justify-between">
-                  <label className="flex items-center gap-2 text-xs cursor-pointer">
-                    <input
-                      type="radio"
-                      name="deliveryZone"
-                      checked={deliveryZone === "custom"}
-                      onChange={() => setDeliveryZone("custom")}
-                      className="accent-color-1"
-                    />
-                    <span className={deliveryZone === "custom" ? "text-color-1 font-semibold" : "text-n-3"}>
-                      Put Custom Delivery Fee
-                    </span>
-                  </label>
-                  {deliveryZone === "custom" && (
-                    <span className="text-[11px] text-color-1 font-mono">Custom active</span>
-                  )}
-                </div>
-
-                {deliveryZone === "custom" && (
-                  <div className="flex items-center justify-between gap-3 p-2.5 rounded-xl bg-n-8/80 border border-color-1/40">
-                    <span className="text-xs text-n-3">Custom Shipping Fee:</span>
-                    <div className="flex items-center gap-1.5">
-                      <span className="text-xs text-n-4 font-bold">रु</span>
-                      <input
-                        type="number"
-                        min="0"
-                        step="10"
-                        value={customDeliveryFee}
-                        onChange={(e) => {
-                          const val = e.target.value === "" ? 0 : Math.max(0, Number(e.target.value));
-                          setCustomDeliveryFee(val);
-                        }}
-                        placeholder="0"
-                        className="w-28 bg-n-7 border border-color-1/50 rounded-lg px-3 py-1.5 text-xs text-n-1 font-bold focus:outline-none focus:border-color-1"
-                      />
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-
             {/* Order Items Preview */}
             <div className="pt-4 border-t border-n-6 space-y-2">
               <div className="flex justify-between items-center text-xs text-n-4">
@@ -501,7 +403,7 @@ const CheckoutModal = () => {
                 </div>
               )}
               <div className="flex justify-between items-center text-xs text-n-3">
-                <span>Shipping & Delivery (COD):</span>
+                <span>Shipping & Delivery (All Nepal):</span>
                 <span className="text-n-1 font-semibold">
                   रु {deliveryFee.toLocaleString()}
                 </span>
