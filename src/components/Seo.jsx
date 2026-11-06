@@ -18,8 +18,8 @@ const pageMetadata = {
     path: "/order",
   },
   shop: {
-    title: `Shop Custom Mouse Pads, Keyboards & Mice | ${brandName}`,
-    description: `Shop high-precision mechanical keyboards, gaming mice, and custom printed desk mats with Cash on Delivery (COD) across Nepal.`,
+    title: `Shop Custom Mouse Pads, Keyboards & Mouse | ${brandName}`,
+    description: `Shop high-precision mechanical keyboards, gaming mouse, and custom printed desk mats with Cash on Delivery (COD) across Nepal.`,
     path: "/shop",
   },
 };

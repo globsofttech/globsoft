@@ -5,7 +5,7 @@ import Heading from "./Heading";
 import { useCart } from "../context/CartContext";
 import ProductDetailModal from "./ProductDetailModal";
 
-const CATEGORIES = ["All Gear", "Mouse Pads", "Mice", "Keyboards", "Accessories"];
+const CATEGORIES = ["All Gear", "Mouse Pads", "Mouse", "Keyboards", "Accessories"];
 
 // Fallback initial products if API takes time or offline
 const FALLBACK_PRODUCTS = [
@@ -40,7 +40,7 @@ const FALLBACK_PRODUCTS = [
   {
     id: "pro-rgb-gaming-mouse",
     name: "Globsoft Pulsar Pro RGB Optical Gaming Mouse",
-    category: "Mice",
+    category: "Mouse",
     price: 1899,
     compare_at_price: 2499,
     badge: "High Performance",
@@ -63,7 +63,7 @@ const FALLBACK_PRODUCTS = [
   {
     id: "wireless-silent-ergonomic-mouse",
     name: "Globsoft Stealth Silent Dual-Mode Wireless Mouse",
-    category: "Mice",
+    category: "Mouse",
     price: 1499,
     compare_at_price: 1999,
     badge: "Office & Devs",
@@ -217,9 +217,12 @@ const Shop = () => {
   const filteredProducts = useMemo(() => {
     return products
       .filter((p) => {
+        const catLower = (p.category || "").toLowerCase();
+        const activeLower = activeCategory.toLowerCase();
         const matchesCategory =
           activeCategory === "All Gear" ||
-          p.category?.toLowerCase() === activeCategory.toLowerCase();
+          catLower === activeLower ||
+          (activeLower === "mouse" && (catLower === "mice" || catLower === "mouse"));
 
         const q = searchQuery.toLowerCase().trim();
         const matchesQuery =
@@ -266,7 +269,7 @@ const Shop = () => {
             title="Engineered for Precision. Tailored for You."
           />
           <p className="body-2 text-n-3 -mt-6">
-            Explore bespoke custom mouse pads, tournament-grade mice, hot-swappable mechanical keyboards, and battle-station accessories. Pay safely with cash on doorstep delivery.
+            Explore bespoke custom mouse pads, tournament-grade mouse, hot-swappable mechanical keyboards, and battle-station accessories. Pay safely with cash on doorstep delivery.
           </p>
         </div>
 

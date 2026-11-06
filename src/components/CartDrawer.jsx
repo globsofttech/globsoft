@@ -9,6 +9,11 @@ const CartDrawer = () => {
     subtotal,
     discountAmount,
     totalAmount,
+    deliveryFee,
+    deliveryZone,
+    setDeliveryZone,
+    customDeliveryFee,
+    setCustomDeliveryFee,
     discountInfo,
     discountError,
     isApplyingDiscount,
@@ -84,7 +89,7 @@ const CartDrawer = () => {
                 </div>
                 <h4 className="text-base font-semibold text-n-2 mb-1">Your cart is empty</h4>
                 <p className="text-xs text-n-4 max-w-xs mx-auto mb-6">
-                  Check out our custom desk mats, precision mice, and hot-swap keyboards!
+                  Check out our custom desk mats, precision mouse, and hot-swap keyboards!
                 </p>
                 <button
                   onClick={closeCart}
@@ -227,6 +232,87 @@ const CartDrawer = () => {
                 )}
               </div>
 
+              {/* Delivery Zone / Fee Selection */}
+              <div className="p-3 rounded-xl bg-n-7/80 border border-n-6 space-y-2">
+                <div className="flex items-center justify-between text-xs font-semibold text-n-2">
+                  <span className="flex items-center gap-1.5">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-color-1">
+                      <rect x="1" y="3" width="15" height="13" />
+                      <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
+                      <circle cx="5.5" cy="18.5" r="2.5" />
+                      <circle cx="18.5" cy="18.5" r="2.5" />
+                    </svg>
+                    Delivery Location & Fee
+                  </span>
+                  <span className="text-color-1 font-bold">
+                    {deliveryFee === 0 ? "FREE" : `+ रु ${deliveryFee.toLocaleString()}`}
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-2 gap-1.5 text-[11px]">
+                  <button
+                    type="button"
+                    onClick={() => setDeliveryZone("inside_valley")}
+                    className={`px-2.5 py-1.5 rounded-lg border text-left transition-all flex flex-col ${
+                      deliveryZone === "inside_valley"
+                        ? "bg-color-1/15 border-color-1 text-color-1 font-semibold"
+                        : "bg-n-8/60 border-n-6 text-n-3 hover:border-n-5"
+                    }`}
+                  >
+                    <span>Kathmandu Valley</span>
+                    <strong className="text-[10px]">रु 100</strong>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setDeliveryZone("outside_valley")}
+                    className={`px-2.5 py-1.5 rounded-lg border text-left transition-all flex flex-col ${
+                      deliveryZone === "outside_valley"
+                        ? "bg-color-1/15 border-color-1 text-color-1 font-semibold"
+                        : "bg-n-8/60 border-n-6 text-n-3 hover:border-n-5"
+                    }`}
+                  >
+                    <span>Outside Valley</span>
+                    <strong className="text-[10px]">रु 150</strong>
+                  </button>
+                </div>
+
+                <div className="flex items-center justify-between pt-1 border-t border-n-6/60 text-[10px]">
+                  <button
+                    type="button"
+                    onClick={() => setDeliveryZone(deliveryZone === "free" ? "inside_valley" : "free")}
+                    className={`hover:underline ${deliveryZone === "free" ? "text-color-4 font-bold" : "text-n-4"}`}
+                  >
+                    {deliveryZone === "free" ? "✓ Free Delivery Applied" : "Free delivery promo"}
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setDeliveryZone(deliveryZone === "custom" ? "inside_valley" : "custom")}
+                    className={`hover:underline ${deliveryZone === "custom" ? "text-color-1 font-bold" : "text-n-4"}`}
+                  >
+                    {deliveryZone === "custom" ? "Custom fee active" : "Put custom fee"}
+                  </button>
+                </div>
+
+                {deliveryZone === "custom" && (
+                  <div className="pt-1.5 flex items-center justify-between gap-2 border-t border-n-6/60">
+                    <span className="text-[11px] text-n-3">Custom Delivery Fee:</span>
+                    <div className="flex items-center gap-1">
+                      <span className="text-xs text-n-4">रु</span>
+                      <input
+                        type="number"
+                        min="0"
+                        step="10"
+                        value={customDeliveryFee}
+                        onChange={(e) => setCustomDeliveryFee(Math.max(0, Number(e.target.value) || 0))}
+                        className="w-20 bg-n-8 border border-color-1/50 rounded-lg px-2 py-0.5 text-xs text-n-1 font-bold focus:outline-none"
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+
               {/* Price Breakdown */}
               <div className="space-y-1.5 text-xs">
                 <div className="flex justify-between text-n-3">
@@ -244,11 +330,19 @@ const CartDrawer = () => {
                 <div className="flex justify-between text-n-3">
                   <span className="flex items-center gap-1.5">
                     Shipping & Delivery
-                    <span className="px-1.5 py-0.5 rounded text-[10px] bg-color-4/15 text-color-4 font-semibold uppercase">
-                      Free
-                    </span>
+                    {deliveryFee === 0 ? (
+                      <span className="px-1.5 py-0.5 rounded text-[10px] bg-color-4/15 text-color-4 font-semibold uppercase">
+                        Free
+                      </span>
+                    ) : (
+                      <span className="px-1.5 py-0.5 rounded text-[10px] bg-color-1/15 text-color-1 font-semibold uppercase">
+                        COD Delivery
+                      </span>
+                    )}
                   </span>
-                  <span className="text-color-4">रु 0</span>
+                  <span className={deliveryFee === 0 ? "text-color-4 font-medium" : "text-n-1 font-medium"}>
+                    {deliveryFee === 0 ? "Free" : `रु ${deliveryFee.toLocaleString()}`}
+                  </span>
                 </div>
 
                 <div className="pt-2 border-t border-n-6 flex justify-between items-baseline text-base font-bold text-n-1">

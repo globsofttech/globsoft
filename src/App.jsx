@@ -23,6 +23,8 @@ import { CartProvider } from "./context/CartContext";
 import Shop from "./components/Shop";
 import CartDrawer from "./components/CartDrawer";
 import CheckoutModal from "./components/CheckoutModal";
+import FeaturedProducts from "./components/FeaturedProducts";
+import FeaturedBlogs from "./components/FeaturedBlogs";
 
 // Automatically scrolls to anchor elements across page navigation and SPA route changes
 const ScrollToAnchor = () => {
@@ -69,8 +71,10 @@ const HomePage = () => {
         <Benefits />
         <Collaboration />
         <Services />
+        <FeaturedProducts />
         <Pricing />
         <Testimonials />
+        <FeaturedBlogs />
         {/* <Roadmap /> */}
         <Contact />
         <Footer />
