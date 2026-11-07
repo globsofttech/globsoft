@@ -147,9 +147,6 @@ const ProductDetailModal = ({ product, isOpen, onClose }) => {
                     रु {Number(product.compare_at_price).toLocaleString()}
                   </span>
                 )}
-                <span className="text-xs text-color-4 bg-color-4/10 px-2 py-0.5 rounded font-semibold ml-auto">
-                  Free Shipping
-                </span>
               </div>
 
               {/* Description */}
