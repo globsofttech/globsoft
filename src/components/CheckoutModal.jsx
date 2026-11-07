@@ -222,7 +222,7 @@ const CheckoutModal = () => {
             {/* Action buttons */}
             <div className="flex flex-col sm:flex-row gap-3 justify-center max-w-md mx-auto">
               <a
-                href={`https://wa.me/9779841234567?text=Hi%20Globsoft,%20I%20just%20placed%20COD%20Order%20%23${placedOrder.order_id}.%20Can%20you%20confirm%20my%20order%3F`}
+                href={`https://wa.me/9779802922270?text=Hi%20Globsoft,%20I%20just%20placed%20COD%20Order%20%23${placedOrder.order_id}.%20Can%20you%20confirm%20my%20order%3F`}
                 target="_blank"
                 rel="noreferrer"
                 className="py-3 px-5 rounded-xl bg-[#25D366]/20 border border-[#25D366]/40 text-[#25D366] font-semibold text-xs hover:bg-[#25D366]/30 transition-colors flex items-center justify-center gap-2"
